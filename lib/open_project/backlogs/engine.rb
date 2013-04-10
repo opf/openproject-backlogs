@@ -1,5 +1,3 @@
-require 'acts_as_silent_list'
-
 module OpenProject::Backlogs
   class Engine < ::Rails::Engine
     engine_name :openproject_backlogs
@@ -16,6 +14,20 @@ module OpenProject::Backlogs
 
     initializer 'backlogs.precompile_assets' do
       Rails.application.config.assets.precompile += %w( backlogs.css backlogs.js )
+    end
+
+    config.before_configuration do |app|
+      # This is required for the routes to be loaded first
+      # as the routes should be prepended so they take precedence over the core.
+      app.config.paths['config/routes'].unshift File.join(File.dirname(__FILE__), "..", "..", "..", "config", "routes.rb")
+    end
+
+    initializer "remove_duplicate_backlogs_routes", :after => "add_routing_paths" do |app|
+      # removes duplicate entry from app.routes_reloader
+      # As we prepend the plugin's routes to the load_path up front and rails
+      # adds all engines' config/routes.rb later, we have double loaded the routes
+      # This is not harmful as such but leads to duplicate routes which decreases performance
+      app.routes_reloader.paths.uniq!
     end
 
     initializer 'backlogs.register_test_paths' do |app|
@@ -90,7 +102,7 @@ module OpenProject::Backlogs
 
           # Master backlog permissions
           permission :view_master_backlog, {
-                                             :rb_master_backlogs  => :show,
+                                             :rb_master_backlogs  => :index,
                                              :rb_sprints          => [:index, :show],
                                              :rb_wikis            => :show,
                                              :rb_stories          => [:index, :show],
@@ -139,7 +151,7 @@ module OpenProject::Backlogs
 
         menu :project_menu,
              :backlogs,
-             {:controller => :rb_master_backlogs, :action => :show},
+             {:controller => :rb_master_backlogs, :action => :index},
              :caption => :project_module_backlogs,
              :before => :calendar,
              :param => :project_id,
