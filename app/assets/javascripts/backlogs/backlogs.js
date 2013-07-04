@@ -1,10 +1,9 @@
 //= require jquery.ui.all
+//= require 'modal'
 //= require backlogs/jquery.flot/jquery.flot
 //= require backlogs/jquery.flot/excanvas
 //= require backlogs/jquery.jeditable.mini
 //= require backlogs/jquery.cookie
-//= require backlogs/livepipe-ui/livepipe
-//= require backlogs/livepipe-ui/window
 //= require backlogs/common
 //= require backlogs/modal
 //= require backlogs/master_backlog
