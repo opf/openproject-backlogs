@@ -22,7 +22,7 @@ var Backlogs = (function () {
   };
 
   return {
-    ModalUpdater: ModalUpder,
+    ModalUpdater: ModalUpdater,
     ModalLink : ModalLink
   };
 }());
