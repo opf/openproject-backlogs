@@ -36,6 +36,8 @@ See doc/COPYRIGHT.rdoc for more details.
 
 # Changelog
 
+* `#2395` [Work Package Tracking] Internal Error when entering a character in a number field in a filter
+
 ## 3.0.4.pre11
 
 * `#2728` Prepared public release
