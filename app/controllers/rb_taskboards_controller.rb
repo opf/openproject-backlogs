@@ -41,7 +41,7 @@ class RbTaskboardsController < RbApplicationController
   helper :taskboards
 
   def show
-    @statuses     = Type.find_by_id(Task.type).statuses
+    @statuses     = Type.find_by_id(Task.type).statuses.order(:position)
     @story_ids    = @sprint.stories(@project).map{|s| s.id}
     @last_updated = Task.find(:first,
                               :conditions => ["parent_id in (?)", @story_ids],
