@@ -36,6 +36,7 @@ See doc/COPYRIGHT.rdoc for more details.
 
 # Changelog
 
+* `#2674` Wrong order of statuses in taskboard
 * `#3440` New workpackage form layout
 * `#4118` [FIX] Add missing labels
 * `#4152` Page not found when only one export card configuration is specified
