@@ -96,7 +96,7 @@ Feature: Edit story on backlogs view
         | Story B | Sprint 001 | 20           |
     And I am already logged in as "mathias"
 
-  @javascript @wip
+  @javascript
   Scenario: Create a new story in the backlog
     Given I am on the master backlog
      When I open the "Product Backlog" backlogs menu
@@ -108,7 +108,7 @@ Feature: Edit story on backlogs view
       And the 1st story in the "Product Backlog" should have the ID of "Alice in Wonderland"
       And I should see 5 stories in "Product Backlog"
 
-  @javascript @wip
+  @javascript
   Scenario: Create a new story in a sprint
     Given I am on the master backlog
      When I open the "Sprint 001" backlogs menu
