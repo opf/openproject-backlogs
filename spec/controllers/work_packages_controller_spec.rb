@@ -123,4 +123,29 @@ describe WorkPackagesController, :type => :controller do
     end
   end
 
+  describe 'settings passed to front-end client' do
+    describe 'visible attributes' do
+      let(:call_action) { get('index', project_id: project.id) }
+      let(:backlogs_attributes) { [:storyPoints, :remainingHours] }
+
+      subject { assigns(:enabled_default_work_package_properties) }
+
+      context 'backlogs module disabled' do
+        before do
+          allow_any_instance_of(Project).to receive(:module_enabled?).and_return(true)
+          allow_any_instance_of(Project).to receive(:module_enabled?).with(:backlogs).and_return(false)
+
+          call_action
+        end
+
+        it { expect(subject).not_to include(*backlogs_attributes) }
+      end
+
+      context 'all permissions granted' do
+        before { call_action }
+
+        it { expect(subject).to include(*backlogs_attributes) }
+      end
+    end
+  end
 end
