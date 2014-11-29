@@ -45,7 +45,7 @@ class Burndown
 
     series_data = OpenProject::Backlogs::Burndown::SeriesRawData.new(project,
                                                                      sprint,
-                                                                     :points => ["story_points"])
+                                                                     points: ["story_points"])
 
     series_data.collect
 
@@ -107,8 +107,8 @@ class Burndown
 
   def determine_max
     @max = {
-      :points => @available_series.values.select{|s| s.unit == :points}.flatten.compact.max || 0.0,
-      :hours => @available_series.values.select{|s| s.unit == :hours}.flatten.compact.max || 0.0
+      points: @available_series.values.select{|s| s.unit == :points}.flatten.compact.max || 0.0,
+      hours: @available_series.values.select{|s| s.unit == :hours}.flatten.compact.max || 0.0
     }
   end
 

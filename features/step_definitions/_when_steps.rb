@@ -34,50 +34,50 @@
 #++
 
 When /^I create the impediment$/ do
-  page.driver.post url_for(:controller => '/rb_impediments', :action => :create),
+  page.driver.post url_for(controller: '/rb_impediments', action: :create),
                    @impediment_params
 end
 
 When /^I create the story$/ do
-  page.driver.post url_for(:controller => '/rb_stories', :action => :create),
+  page.driver.post url_for(controller: '/rb_stories', action: :create),
                    @story_params
 end
 
 When /^I create the task$/ do
-  page.driver.post url_for(:controller => '/rb_tasks', :action => :create),
+  page.driver.post url_for(controller: '/rb_tasks', action: :create),
                    @task_params
 end
 
 When /^I move the (story|item|task) named (.+) below (.+)$/ do |type, story_subject, prev_subject|
   work_package_class, controller_name =
     if type.strip == "task" then [Task, "rb_tasks"] else [Story, "rb_stories"] end
-  story = work_package_class.find(:first, :conditions => ["subject=?", story_subject.strip])
-  prev  = work_package_class.find(:first, :conditions => ["subject=?", prev_subject.strip])
+  story = work_package_class.find(:first, conditions: ["subject=?", story_subject.strip])
+  prev  = work_package_class.find(:first, conditions: ["subject=?", prev_subject.strip])
 
   attributes = story.attributes
   attributes[:prev]             = prev.id
   attributes[:fixed_version_id] = prev.fixed_version_id unless type == "task"
 
-  page.driver.post url_for(:controller => '/'+controller_name, :action => "update", :id => story),
+  page.driver.post url_for(controller: '/'+controller_name, action: "update", id: story),
                    attributes.merge({ "_method" => "put" })
 end
 
 When /^I move the story named (.+) (up|down) to the (\d+)(?:st|nd|rd|th) position of the sprint named (.+)$/ do |story_subject, direction, position, sprint_name|
   position = position.to_i
-  story = Story.find(:first, :conditions => ["subject=?", story_subject])
-  sprint = Sprint.find(:first, :conditions => ["name=?", sprint_name])
+  story = Story.find(:first, conditions: ["subject=?", story_subject])
+  sprint = Sprint.find(:first, conditions: ["name=?", sprint_name])
   story.fixed_version = sprint
 
   attributes = story.attributes
   attributes[:prev] = if position == 1
                         ''
                       else
-                        stories = Story.find(:all, :conditions => ["fixed_version_id=? AND type_id IN (?)", sprint.id, Story.types], :order => "position ASC")
+                        stories = Story.find(:all, conditions: ["fixed_version_id=? AND type_id IN (?)", sprint.id, Story.types], order: "position ASC")
                         raise "You indicated an invalid position (#{position}) in a sprint with #{stories.length} stories" if 0 > position or position > stories.length
                         stories[position - (direction=="up" ? 2 : 1)].id
                       end
 
-  page.driver.post url_for(:controller => '/rb_stories', :action => "update", :id => story.id),
+  page.driver.post url_for(controller: '/rb_stories', action: "update", id: story.id),
                    attributes.merge({ "_method" => "put" })
 end
 
@@ -97,38 +97,38 @@ When /^I move the (\d+)(?:st|nd|rd|th) story to the (\d+|last)(?:st|nd|rd|th)? p
            @story_ids[new_pos.to_i-1]
          end
 
-  page.driver.post url_for(:controller => '/rb_stories', :action => :update, :id => story.text),
-                   {:prev => (prev.nil? ? '' : prev.text), :project_id => @project.id, "_method" => "put"}
+  page.driver.post url_for(controller: '/rb_stories', action: :update, id: story.text),
+                   {prev: (prev.nil? ? '' : prev.text), project_id: @project.id, "_method" => "put"}
 
   @story = Story.find(story.text.to_i)
 end
 
 When /^I request the server_variables resource$/ do
-  visit url_for(:controller => '/rb_server_variables', :action => :show, :project_id => @project)
+  visit url_for(controller: '/rb_server_variables', action: :show, project_id: @project)
 end
 
 When /^I update the impediment$/ do
-  page.driver.post url_for(:controller => '/rb_impediments', :action => :update),
+  page.driver.post url_for(controller: '/rb_impediments', action: :update),
                    @impediment_params.merge({ "_method" => "put" })
 end
 
 When /^I update the sprint$/ do
-  page.driver.post url_for(:controller => '/rb_sprints', :action => "update", :sprint_id => @sprint_params['id']),
+  page.driver.post url_for(controller: '/rb_sprints', action: "update", sprint_id: @sprint_params['id']),
                    @sprint_params.merge({ "_method" => "put" })
 end
 
 When /^I update the story$/ do
-  page.driver.post url_for(:controller => '/rb_stories', :action => :update, :id => @story_params[:id]),
+  page.driver.post url_for(controller: '/rb_stories', action: :update, id: @story_params[:id]),
                    @story_params.merge({ "_method" => "put" })
 end
 
 When /^I update the task$/ do
-  page.driver.post url_for(:controller => '/rb_tasks', :action => :update, :id => @task_params[:id]),
+  page.driver.post url_for(controller: '/rb_tasks', action: :update, id: @task_params[:id]),
                    @task_params.merge({ "_method" => "put" })
 end
 
 When /^I view the master backlog$/ do
-  visit url_for(:controller => '/projects', :action => :show, :id => @project)
+  visit url_for(controller: '/projects', action: :show, id: @project)
   click_link("Backlogs")
 end
 
@@ -144,13 +144,13 @@ end
 # WARN: Depends on deprecated behavior of path_for('the task board for
 #       "sprint name"')
 When /^I view the sprint notes$/ do
-  visit url_for(:controller => '/rb_wikis', :action => 'show', :sprint_id => @sprint)
+  visit url_for(controller: '/rb_wikis', action: 'show', sprint_id: @sprint)
 end
 
 # WARN: Depends on deprecated behavior of path_for('the task board for
 #       "sprint name"')
 When /^I edit the sprint notes$/ do
-  visit url_for(:controller => '/rb_wikis', :action => 'edit', :sprint_id => @sprint)
+  visit url_for(controller: '/rb_wikis', action: 'edit', sprint_id: @sprint)
 end
 
 When /^I follow "(.+?)" of the "(.+?)" (?:backlogs )?menu$/ do |link, backlog_name|

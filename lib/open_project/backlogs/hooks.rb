@@ -82,7 +82,7 @@ module OpenProject::Backlogs::Hooks
 
       if work_package.is_story?
         snippet << '<div class="attribute_wrapper">'
-        snippet << context[:form].text_field(:story_points, :size => 3, :class => 'short')
+        snippet << context[:form].text_field(:story_points, size: 3, class: 'short')
         snippet << '</div>'
 
         if work_package.descendants.length != 0
@@ -102,7 +102,7 @@ module OpenProject::Backlogs::Hooks
       end
 
       snippet << '<div class="attribute_wrapper">'
-      snippet << context[:form].text_field(:remaining_hours, :size => 3, :class => 'short', :placeholder => l(:label_hours))
+      snippet << context[:form].text_field(:remaining_hours, size: 3, class: 'short', placeholder: l(:label_hours))
       snippet << '</div>'
 
       params = context[:controller].params
@@ -131,7 +131,7 @@ module OpenProject::Backlogs::Hooks
 
       if User.current.allowed_to?(:edit_wiki_pages, project)
         snippet += '<span id="edit_wiki_page_action">'
-        snippet += link_to l(:button_edit_wiki), {:controller => '/rb_wikis', :action => 'edit', :project_id => project.id, :sprint_id => version.id }, :class => 'icon icon-edit'
+        snippet += link_to l(:button_edit_wiki), {controller: '/rb_wikis', action: 'edit', project_id: project.id, sprint_id: version.id }, class: 'icon icon-edit'
         snippet += '</span>'
 
         # This wouldn't be necesary if the schedules plugin didn't disable the
@@ -148,8 +148,8 @@ module OpenProject::Backlogs::Hooks
 
     def view_my_account(context={ })
       return context[:controller].send(:render_to_string, {
-          :partial => 'shared/view_my_account',
-          :locals => {:user => context[:user], :color => context[:user].backlogs_preference(:task_color), :versions_default_fold_state => context[:user].backlogs_preference(:versions_default_fold_state) }
+          partial: 'shared/view_my_account',
+          locals: {user: context[:user], color: context[:user].backlogs_preference(:task_color), versions_default_fold_state: context[:user].backlogs_preference(:versions_default_fold_state) }
         })
     end
 
