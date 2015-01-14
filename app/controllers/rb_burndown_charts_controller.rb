@@ -45,5 +45,4 @@ class RbBurndownChartsController < RbApplicationController
       format.html { render layout: false }
     end
   end
-
 end

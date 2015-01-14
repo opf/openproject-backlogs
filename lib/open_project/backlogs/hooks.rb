@@ -111,9 +111,9 @@ module OpenProject::Backlogs::Hooks
         snippet << "#{check_box_tag('link_to_original', params[:copy_from], true)}</p>"
 
         snippet << "<p><label>#{l(:rb_label_copy_tasks)}</label>"
-        snippet << "#{radio_button_tag('copy_tasks', 'open:' + params[:copy_from], true, { id: 'copy_tasks_open'})} #{l(:rb_label_copy_tasks_open)}<br />"
-        snippet << "#{radio_button_tag('copy_tasks', 'none', false, {id: 'copy_tasks_none'})} #{l(:rb_label_copy_tasks_none)}<br />"
-        snippet << "#{radio_button_tag('copy_tasks', 'all:' + params[:copy_from], false, {id: 'copy_tasks_all'})} #{l(:rb_label_copy_tasks_all)}</p>"
+        snippet << "#{radio_button_tag('copy_tasks', 'open:' + params[:copy_from], true,  id: 'copy_tasks_open')} #{l(:rb_label_copy_tasks_open)}<br />"
+        snippet << "#{radio_button_tag('copy_tasks', 'none', false, id: 'copy_tasks_none')} #{l(:rb_label_copy_tasks_none)}<br />"
+        snippet << "#{radio_button_tag('copy_tasks', 'all:' + params[:copy_from], false, id: 'copy_tasks_all')} #{l(:rb_label_copy_tasks_all)}</p>"
       end
 
       snippet << %(</div>)
@@ -121,7 +121,7 @@ module OpenProject::Backlogs::Hooks
       snippet
     end
 
-    def view_versions_show_bottom(context={ })
+    def view_versions_show_bottom(context = {})
       version = context[:version]
       project = version.project
 
@@ -131,7 +131,7 @@ module OpenProject::Backlogs::Hooks
 
       if User.current.allowed_to?(:edit_wiki_pages, project)
         snippet += '<span id="edit_wiki_page_action">'
-        snippet += link_to l(:button_edit_wiki), {controller: '/rb_wikis', action: 'edit', project_id: project.id, sprint_id: version.id }, class: 'icon icon-edit'
+        snippet += link_to l(:button_edit_wiki), { controller: '/rb_wikis', action: 'edit', project_id: project.id, sprint_id: version.id }, class: 'icon icon-edit'
         snippet += '</span>'
 
         # This wouldn't be necesary if the schedules plugin didn't disable the
@@ -146,14 +146,14 @@ module OpenProject::Backlogs::Hooks
       end
     end
 
-    def view_my_account(context={ })
-      return context[:controller].send(:render_to_string, {
-          partial: 'shared/view_my_account',
-          locals: {user: context[:user], color: context[:user].backlogs_preference(:task_color), versions_default_fold_state: context[:user].backlogs_preference(:versions_default_fold_state) }
-        })
+    def view_my_account(context = {})
+      context[:controller].send(:render_to_string,
+                                partial: 'shared/view_my_account',
+                                locals: { user: context[:user], color: context[:user].backlogs_preference(:task_color), versions_default_fold_state: context[:user].backlogs_preference(:versions_default_fold_state) }
+        )
     end
 
-    def controller_work_package_new_after_save(context={ })
+    def controller_work_package_new_after_save(context = {})
       params = context[:params]
       work_package = context[:work_package]
 
@@ -175,11 +175,11 @@ module OpenProject::Backlogs::Hooks
 
           story = (id.nil? ? nil : Story.find(Integer(id)))
 
-          if ! story.nil? && action != 'none'
+          if !story.nil? && action != 'none'
             tasks = story.tasks
             case action
               when 'open'
-                tasks = tasks.select{|t| !t.closed?}
+                tasks = tasks.select { |t| !t.closed? }
               when 'all', 'none'
                 #
               else
