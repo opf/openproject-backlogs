@@ -42,10 +42,12 @@ describe 'API v3 Work package resource' do
 
   let(:admin) { FactoryGirl.create(:admin) }
   let(:project) { FactoryGirl.create(:project) }
-  let(:work_package) { FactoryGirl.create(:work_package,
-                                          project: project,
-                                          story_points: 8,
-                                          remaining_hours: 5) }
+  let(:work_package) {
+    FactoryGirl.create(:work_package,
+                       project: project,
+                       story_points: 8,
+                       remaining_hours: 5)
+  }
 
   describe '#get' do
     shared_context 'query work package' do
@@ -66,8 +68,10 @@ describe 'API v3 Work package resource' do
     end
 
     context 'backlogs deactivated' do
-      let(:project) { FactoryGirl.create(:project,
-                                         enabled_module_names: []) }
+      let(:project) {
+        FactoryGirl.create(:project,
+                           enabled_module_names: [])
+      }
 
       include_context 'query work package'
 
