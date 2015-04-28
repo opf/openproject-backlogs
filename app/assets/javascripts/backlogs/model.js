@@ -269,6 +269,12 @@ RB.Model = (function ($) {
       input.addClass('editor');
       input.removeClass('template');
       input.removeClass('helper');
+      if (input.is('select')) {
+        input.addClass('form--select');
+      } else {
+        input.addClass('form--text-field');
+      }
+      input.addClass('-tiny');
       return input;
     },
 
