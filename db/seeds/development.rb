@@ -33,8 +33,8 @@
 # See doc/COPYRIGHT.rdoc for more details.
 #++
 
-module OpenProject
-  module Backlogs
-    VERSION = "4.2.4"
-  end
+%w{ settings }.each do |file|
+  puts "***** #{file}"
+
+  require "#{File.dirname(__FILE__)}/#{file}"
 end
