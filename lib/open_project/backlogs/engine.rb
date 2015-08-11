@@ -215,6 +215,12 @@ module OpenProject::Backlogs
       end
     end
 
+    initializer 'backlogs.register_test_path' do |app|
+      require File.join(File.dirname(__FILE__), 'disabled_specs')
+      app.config.plugins_to_test_paths << root
+    end
+
+
     initializer "backlogs.register_hooks" do
       require "open_project/backlogs/hooks"
     end
