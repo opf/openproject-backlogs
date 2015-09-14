@@ -52,7 +52,7 @@ module OpenProject::Backlogs::Patches::WorkPackagesHelperPatch
       def work_package_form_remaining_hours_attribute(form, work_package, _)
         field = work_package_form_field do
           options = { placeholder: l(:label_hours) }
-          options[:disabled] = 'disabled' unless work_package.leaf?
+          options[:disabled] = 'disabled' unless work_package.new_record? || work_package.leaf?
 
           form.text_field(:remaining_hours, options)
         end
