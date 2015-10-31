@@ -4,7 +4,8 @@
 # Copyright (C)2013-2014 the OpenProject Foundation (OPF)
 # Copyright (C)2011 Stephan Eckardt, Tim Felgentreff, Marnen Laibow-Koser, Sandro Munda
 # Copyright (C)2010-2011 friflaj
-# Copyright (C)2010 Maxime Guilbot, Andrew Vit, Joakim Kolsjö, ibussieres, Daniel Passos, Jason Vasquez, jpic, Emiliano Heyns
+# Copyright (C)2010 Maxime Guilbot, Andrew Vit, Joakim Kolsjö, ibussieres,
+#                   Daniel Passos, Jason Vasquez, jpic, Emiliano Heyns
 # Copyright (C)2009-2010 Mark Maglana
 # Copyright (C)2009 Joe Heck, Nate Lowrie
 #
@@ -40,8 +41,9 @@ describe Backlog, type: :model do
 
   before(:each) do
     @feature = FactoryGirl.create(:type_feature)
-    allow(Setting).to receive(:plugin_openproject_backlogs).and_return({ 'story_types'           => [@feature.id.to_s],
-                                                                         'task_type'             => '0' })
+    allow(Setting).to receive(:plugin_openproject_backlogs)
+                        .and_return({ 'story_types' => [@feature.id.to_s],
+                                      'task_type'   => '0' })
     @status = FactoryGirl.create(:status)
   end
 
@@ -50,9 +52,13 @@ describe Backlog, type: :model do
       describe 'WITH one open version defined in the project' do
         before(:each) do
           @project = project
-          @work_packages = [FactoryGirl.create(:work_package, subject: 'work_package1', project: @project, type: @feature, status: @status)]
+          @work_packages = [FactoryGirl.create(:work_package, subject: 'work_package1',
+                                                              project: @project,
+                                                              type: @feature,
+                                                              status: @status)]
           @version = FactoryGirl.create(:version, project: project, fixed_issues: @work_packages)
-          @version_settings = @version.version_settings.create(display: VersionSetting::DISPLAY_RIGHT, project: project)
+          @version_settings = @version.version_settings.create(display: VersionSetting::DISPLAY_RIGHT,
+                                                               project: project)
         end
 
         it { expect(Backlog.owner_backlogs(@project)[0]).to be_owner_backlog }

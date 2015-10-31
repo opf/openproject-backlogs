@@ -4,7 +4,8 @@
 # Copyright (C)2013-2014 the OpenProject Foundation (OPF)
 # Copyright (C)2011 Stephan Eckardt, Tim Felgentreff, Marnen Laibow-Koser, Sandro Munda
 # Copyright (C)2010-2011 friflaj
-# Copyright (C)2010 Maxime Guilbot, Andrew Vit, Joakim Kolsjö, ibussieres, Daniel Passos, Jason Vasquez, jpic, Emiliano Heyns
+# Copyright (C)2010 Maxime Guilbot, Andrew Vit, Joakim Kolsjö, ibussieres,
+#                   Daniel Passos, Jason Vasquez, jpic, Emiliano Heyns
 # Copyright (C)2009-2010 Mark Maglana
 # Copyright (C)2009 Joe Heck, Nate Lowrie
 #
@@ -39,7 +40,7 @@ class RbStoriesController < RbApplicationController
   def create
     params['author_id'] = User.current.id
     story = Story.create_and_position(story_params, project: @project,
-                                              author: User.current)
+                                                    author: User.current)
     status = (story.id ? 200 : 400)
 
     respond_to do |format|
@@ -58,7 +59,7 @@ class RbStoriesController < RbApplicationController
     end
   end
 
-private
+  private
 
   def story_params
     params.permit(:project_id, :sprint_id, :id)

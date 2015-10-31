@@ -4,7 +4,8 @@
 # Copyright (C)2013-2014 the OpenProject Foundation (OPF)
 # Copyright (C)2011 Stephan Eckardt, Tim Felgentreff, Marnen Laibow-Koser, Sandro Munda
 # Copyright (C)2010-2011 friflaj
-# Copyright (C)2010 Maxime Guilbot, Andrew Vit, Joakim Kolsjö, ibussieres, Daniel Passos, Jason Vasquez, jpic, Emiliano Heyns
+# Copyright (C)2010 Maxime Guilbot, Andrew Vit, Joakim Kolsjö, ibussieres,
+#                   Daniel Passos, Jason Vasquez, jpic, Emiliano Heyns
 # Copyright (C)2009-2010 Mark Maglana
 # Copyright (C)2009 Joe Heck, Nate Lowrie
 #
@@ -79,10 +80,12 @@ describe 'rb_master_backlogs/index', type: :view do
                       )
   }
   let(:stories) { [story_a, story_b, story_c] }
-  let(:sprint)   { FactoryGirl.create(:sprint, project: project) }
+  let(:sprint) { FactoryGirl.create(:sprint, project: project) }
 
   before :each do
-    allow(Setting).to receive(:plugin_openproject_backlogs).and_return({ 'story_types' => [type_feature.id], 'task_type' => type_task.id })
+    allow(Setting).to receive(:plugin_openproject_backlogs)
+                        .and_return({ 'story_types' => [type_feature.id],
+                                      'task_type' => type_task.id })
     view.extend RbCommonHelper
     view.extend RbMasterBacklogsHelper
     allow(view).to receive(:current_user).and_return(user)
@@ -107,7 +110,9 @@ describe 'rb_master_backlogs/index', type: :view do
     render
 
     assert_select '.menu ul.items a' do |a|
-      url = backlogs_project_sprint_export_card_configuration_path(project.identifier, sprint.id, default_export_card_config.id, format: :pdf)
+      url = backlogs_project_sprint_export_card_configuration_path(
+        project.identifier, sprint.id, default_export_card_config.id, format: :pdf
+      )
       expect(a.last).to have_content 'Export'
       expect(a.last).to have_css("a[href='#{url}']")
     end

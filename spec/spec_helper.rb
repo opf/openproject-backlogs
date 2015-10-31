@@ -4,7 +4,8 @@
 # Copyright (C)2013-2014 the OpenProject Foundation (OPF)
 # Copyright (C)2011 Stephan Eckardt, Tim Felgentreff, Marnen Laibow-Koser, Sandro Munda
 # Copyright (C)2010-2011 friflaj
-# Copyright (C)2010 Maxime Guilbot, Andrew Vit, Joakim Kolsjö, ibussieres, Daniel Passos, Jason Vasquez, jpic, Emiliano Heyns
+# Copyright (C)2010 Maxime Guilbot, Andrew Vit, Joakim Kolsjö, ibussieres,
+#                   Daniel Passos, Jason Vasquez, jpic, Emiliano Heyns
 # Copyright (C)2009-2010 Mark Maglana
 # Copyright (C)2009 Joe Heck, Nate Lowrie
 #
@@ -35,6 +36,7 @@
 
 # -- load spec_helper from OpenProject core
 require 'spec_helper'
+require 'factory_girl_rails'
 
 # load gem dependencies
 require 'prawn'

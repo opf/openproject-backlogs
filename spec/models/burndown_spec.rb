@@ -4,7 +4,8 @@
 # Copyright (C)2013-2014 the OpenProject Foundation (OPF)
 # Copyright (C)2011 Stephan Eckardt, Tim Felgentreff, Marnen Laibow-Koser, Sandro Munda
 # Copyright (C)2010-2011 friflaj
-# Copyright (C)2010 Maxime Guilbot, Andrew Vit, Joakim Kolsjö, ibussieres, Daniel Passos, Jason Vasquez, jpic, Emiliano Heyns
+# Copyright (C)2010 Maxime Guilbot, Andrew Vit, Joakim Kolsjö, ibussieres,
+#                   Daniel Passos, Jason Vasquez, jpic, Emiliano Heyns
 # Copyright (C)2009-2010 Mark Maglana
 # Copyright (C)2009 Joe Heck, Nate Lowrie
 #
@@ -71,11 +72,12 @@ describe Burndown, type: :model do
 
     allow(User).to receive(:current).and_return(user)
 
-    allow(Setting).to receive(:plugin_openproject_backlogs).and_return({ 'points_burn_direction' => 'down',
-                                                                         'wiki_template'         => '',
-                                                                         'card_spec'             => 'Sattleford VM-5040',
-                                                                         'story_types'           => [type_feature.id.to_s],
-                                                                         'task_type'             => type_task.id.to_s })
+    allow(Setting).to receive(:plugin_openproject_backlogs)
+                        .and_return({ 'points_burn_direction' => 'down',
+                                      'wiki_template'         => '',
+                                      'card_spec'             => 'Sattleford VM-5040',
+                                      'story_types'           => [type_feature.id.to_s],
+                                      'task_type'             => type_task.id.to_s })
 
     project.save!
 
@@ -97,8 +99,8 @@ describe Burndown, type: :model do
 
       describe 'WITH having a version in the future' do
         before(:each) do
-          version.start_date = Date.today + 1.days
-          version.effective_date = Date.today + 6.days
+          version.start_date = Time.zone.today + 1.days
+          version.effective_date = Time.zone.today + 6.days
           version.save!
         end
 
@@ -109,8 +111,8 @@ describe Burndown, type: :model do
 
       describe 'WITH having a 10 (working days) sprint and being 5 (working) days into it' do
         before(:each) do
-          version.start_date = Date.today - 7.days
-          version.effective_date = Date.today + 6.days
+          version.start_date = Time.zone.today - 7.days
+          version.effective_date = Time.zone.today + 6.days
           version.save!
         end
 
@@ -122,8 +124,8 @@ describe Burndown, type: :model do
                                                type: type_feature,
                                                status: issue_open,
                                                priority: issue_priority,
-                                               created_at: Date.today - 20.days,
-                                               updated_at: Date.today - 20.days)
+                                               created_at: Time.zone.today - 20.days,
+                                               updated_at: Time.zone.today - 20.days)
           end
 
           describe 'WITH the story having story_point defined on creation' do
@@ -135,8 +137,8 @@ describe Burndown, type: :model do
 
             describe 'WITH the story being closed and opened again within the sprint duration' do
               before(:each) do
-                set_attribute_journalized @story, :status_id=, issue_closed.id, Time.now - 6.days
-                set_attribute_journalized @story, :status_id=, issue_open.id, Time.now - 3.days
+                set_attribute_journalized @story, :status_id=, issue_closed.id, Time.zone.now - 6.days
+                set_attribute_journalized @story, :status_id=, issue_open.id, Time.zone.now - 3.days
 
                 @burndown = Burndown.new(sprint, project)
               end
@@ -151,8 +153,8 @@ describe Burndown, type: :model do
 
             describe "WITH the story marked as resolved and consequently 'done'" do
               before(:each) do
-                set_attribute_journalized @story, :status_id=, issue_resolved.id, Time.now - 6.days
-                set_attribute_journalized @story, :status_id=, issue_open.id, Time.now - 3.days
+                set_attribute_journalized @story, :status_id=, issue_resolved.id, Time.zone.now - 6.days
+                set_attribute_journalized @story, :status_id=, issue_open.id, Time.zone.now - 3.days
                 project.done_statuses << issue_resolved
                 @burndown = Burndown.new(sprint, project)
               end
@@ -174,8 +176,8 @@ describe Burndown, type: :model do
                                                        type: type_feature,
                                                        status: issue_open,
                                                        priority: issue_priority,
-                                                       created_at: Date.today - (20 - i).days,
-                                                       updated_at: Date.today - (20 - i).days)
+                                                       created_at: Time.zone.today - (20 - i).days,
+                                                       updated_at: Time.zone.today - (20 - i).days)
               @stories[i].current_journal.update_attribute(:created_at, @stories[i].created_at)
             end
           end
@@ -200,12 +202,18 @@ describe Burndown, type: :model do
                   @burndown = Burndown.new(sprint, project)
                 end
 
-                it { expect(@burndown.story_points).to eql [90.0, 80.0, 70.0, 60.0, 50.0, 50.0] }
+                it {
+                  expect(@burndown.story_points).to eql [90.0, 80.0, 70.0, 60.0, 50.0, 50.0]
+                }
                 it { expect(@burndown.story_points.unit).to eql :points }
                 it { expect(@burndown.days).to eql(sprint.days) }
                 it { expect(@burndown.max[:hours]).to eql 0.0 }
                 it { expect(@burndown.max[:points]).to eql 90.0 }
-                it { expect(@burndown.story_points_ideal).to eql [90.0, 80.0, 70.0, 60.0, 50.0, 40.0, 30.0, 20.0, 10.0, 0.0] }
+                it {
+                  expect(@burndown.story_points_ideal).to eql [
+                    90.0, 80.0, 70.0, 60.0, 50.0, 40.0, 30.0, 20.0, 10.0, 0.0
+                  ]
+                }
               end
             end
           end

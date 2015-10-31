@@ -4,7 +4,8 @@
 # Copyright (C)2013-2014 the OpenProject Foundation (OPF)
 # Copyright (C)2011 Stephan Eckardt, Tim Felgentreff, Marnen Laibow-Koser, Sandro Munda
 # Copyright (C)2010-2011 friflaj
-# Copyright (C)2010 Maxime Guilbot, Andrew Vit, Joakim Kolsjö, ibussieres, Daniel Passos, Jason Vasquez, jpic, Emiliano Heyns
+# Copyright (C)2010 Maxime Guilbot, Andrew Vit, Joakim Kolsjö, ibussieres,
+#                   Daniel Passos, Jason Vasquez, jpic, Emiliano Heyns
 # Copyright (C)2009-2010 Mark Maglana
 # Copyright (C)2009 Joe Heck, Nate Lowrie
 #
@@ -47,7 +48,11 @@ module OpenProject::Backlogs::Patches::MyControllerPatch
   module InstanceMethods
     def save_backlogs_preferences
       if request.patch? && flash[:notice] == l(:notice_account_updated)
-        versions_default_fold_state = (params[:backlogs] && params[:backlogs][:versions_default_fold_state]) ? params[:backlogs][:versions_default_fold_state] : 'open'
+        versions_default_fold_state = if params[:backlogs] && params[:backlogs][:versions_default_fold_state]
+                                        params[:backlogs][:versions_default_fold_state]
+                                      else
+                                        'open'
+                                      end
         User.current.backlogs_preference(:versions_default_fold_state, versions_default_fold_state)
 
         color = (params[:backlogs] ? params[:backlogs][:task_color] : '').to_s

@@ -4,7 +4,8 @@
 # Copyright (C)2013-2014 the OpenProject Foundation (OPF)
 # Copyright (C)2011 Stephan Eckardt, Tim Felgentreff, Marnen Laibow-Koser, Sandro Munda
 # Copyright (C)2010-2011 friflaj
-# Copyright (C)2010 Maxime Guilbot, Andrew Vit, Joakim Kolsjö, ibussieres, Daniel Passos, Jason Vasquez, jpic, Emiliano Heyns
+# Copyright (C)2010 Maxime Guilbot, Andrew Vit, Joakim Kolsjö, ibussieres,
+#                   Daniel Passos, Jason Vasquez, jpic, Emiliano Heyns
 # Copyright (C)2009-2010 Mark Maglana
 # Copyright (C)2009 Joe Heck, Nate Lowrie
 #
@@ -88,7 +89,11 @@ module OpenProject::Backlogs::Hooks
 
       if User.current.allowed_to?(:edit_wiki_pages, project)
         snippet += '<span id="edit_wiki_page_action">'
-        snippet += link_to l(:button_edit_wiki), { controller: '/rb_wikis', action: 'edit', project_id: project.id, sprint_id: version.id }, class: 'icon icon-edit'
+        snippet += link_to l(:button_edit_wiki), { controller: '/rb_wikis',
+                                                   action: 'edit',
+                                                   project_id: project.id,
+                                                   sprint_id: version.id
+                                                 }, class: 'icon icon-edit'
         snippet += '</span>'
 
         # This wouldn't be necesary if the schedules plugin didn't disable the
@@ -101,6 +106,8 @@ module OpenProject::Backlogs::Hooks
           }(jQuery))
         JS
       end
+
+      snippet
     end
 
     def view_my_settings(context = {})

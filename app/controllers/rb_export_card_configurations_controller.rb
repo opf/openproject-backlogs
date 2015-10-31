@@ -4,7 +4,8 @@
 # Copyright (C)2013-2014 the OpenProject Foundation (OPF)
 # Copyright (C)2011 Stephan Eckardt, Tim Felgentreff, Marnen Laibow-Koser, Sandro Munda
 # Copyright (C)2010-2011 friflaj
-# Copyright (C)2010 Maxime Guilbot, Andrew Vit, Joakim Kolsjö, ibussieres, Daniel Passos, Jason Vasquez, jpic, Emiliano Heyns
+# Copyright (C)2010 Maxime Guilbot, Andrew Vit, Joakim Kolsjö, ibussieres,
+#                   Daniel Passos, Jason Vasquez, jpic, Emiliano Heyns
 # Copyright (C)2009-2010 Mark Maglana
 # Copyright (C)2009 Joe Heck, Nate Lowrie
 #
@@ -36,7 +37,7 @@
 class RbExportCardConfigurationsController < RbApplicationController
   include OpenProject::PdfExport::ExportCard
 
-  before_filter :load_project_and_sprint
+  before_action :load_project_and_sprint
 
   def index
     @configs = ExportCardConfiguration.active
@@ -47,7 +48,7 @@ class RbExportCardConfigurationsController < RbApplicationController
 
     cards_document = OpenProject::PdfExport::ExportCard::DocumentGenerator.new(config, @sprint.stories(@project))
 
-    filename = "#{@project}-#{@sprint}-#{Time.now.strftime('%B-%d-%Y')}.pdf"
+    filename = "#{@project}-#{@sprint}-#{Time.zone.now.strftime('%B-%d-%Y')}.pdf"
     respond_to do |format|
       format.pdf {
         send_data(cards_document.render,

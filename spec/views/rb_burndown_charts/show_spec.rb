@@ -4,7 +4,8 @@
 # Copyright (C)2013-2014 the OpenProject Foundation (OPF)
 # Copyright (C)2011 Stephan Eckardt, Tim Felgentreff, Marnen Laibow-Koser, Sandro Munda
 # Copyright (C)2010-2011 friflaj
-# Copyright (C)2010 Maxime Guilbot, Andrew Vit, Joakim Kolsjö, ibussieres, Daniel Passos, Jason Vasquez, jpic, Emiliano Heyns
+# Copyright (C)2010 Maxime Guilbot, Andrew Vit, Joakim Kolsjö, ibussieres,
+#                   Daniel Passos, Jason Vasquez, jpic, Emiliano Heyns
 # Copyright (C)2009-2010 Mark Maglana
 # Copyright (C)2009 Joe Heck, Nate Lowrie
 #
@@ -85,7 +86,11 @@ describe 'rb_burndown_charts/show', type: :view do
                       )
   }
   let(:stories) { [story_a, story_b, story_c] }
-  let(:sprint)   { FactoryGirl.create(:sprint, project: project, start_date: Date.today - 1.week, effective_date: Date.today + 1.week) }
+  let(:sprint) { 
+    FactoryGirl.create(:sprint, project: project,
+                                start_date: Time.zone.today - 1.week,
+                                effective_date: Time.zone.today + 1.week) 
+  }
   let(:task) do
     task = FactoryGirl.create(:task, project: project, status: statuses[0], fixed_version: sprint, type: type_task)
     # This is necessary as for some unknown reason passing the parent directly
@@ -96,7 +101,9 @@ describe 'rb_burndown_charts/show', type: :view do
   end
 
   before :each do
-    allow(Setting).to receive(:plugin_openproject_backlogs).and_return({ 'story_types' => [type_feature.id], 'task_type' => type_task.id })
+    allow(Setting).to receive(:plugin_openproject_backlogs)
+                        .and_return({ 'story_types' => [type_feature.id],
+                                      'task_type' => type_task.id })
     view.extend BurndownChartsHelper
 
     # We directly force the creation of stories,statuses by calling the method

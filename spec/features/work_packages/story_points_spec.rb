@@ -4,7 +4,8 @@
 # Copyright (C)2013-2014 the OpenProject Foundation (OPF)
 # Copyright (C)2011 Stephan Eckardt, Tim Felgentreff, Marnen Laibow-Koser, Sandro Munda
 # Copyright (C)2010-2011 friflaj
-# Copyright (C)2010 Maxime Guilbot, Andrew Vit, Joakim Kolsjö, ibussieres, Daniel Passos, Jason Vasquez, jpic, Emiliano Heyns
+# Copyright (C)2010 Maxime Guilbot, Andrew Vit, Joakim Kolsjö, ibussieres,
+#                   Daniel Passos, Jason Vasquez, jpic, Emiliano Heyns
 # Copyright (C)2009-2010 Mark Maglana
 # Copyright (C)2009 Joe Heck, Nate Lowrie
 #
@@ -38,11 +39,12 @@ require 'spec_helper'
 describe 'Work packages having story points', type: :feature, js: true do
   before do
     allow(User).to receive(:current).and_return current_user
-    allow(Setting).to receive(:plugin_openproject_backlogs).and_return('points_burn_direction' => 'down',
-                                                                       'wiki_template'         => '',
-                                                                       'card_spec'             => 'Sattleford VM-5040',
-                                                                       'story_types'           => [story_type.id.to_s],
-                                                                       'task_type'             => task_type.id.to_s)
+    allow(Setting).to receive(:plugin_openproject_backlogs)
+                        .and_return('points_burn_direction' => 'down',
+                                    'wiki_template'         => '',
+                                    'card_spec'             => 'Sattleford VM-5040',
+                                    'story_types'           => [story_type.id.to_s],
+                                    'task_type'             => task_type.id.to_s)
   end
 
   let(:current_user) { FactoryGirl.create(:admin) }

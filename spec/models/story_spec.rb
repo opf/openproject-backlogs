@@ -4,7 +4,8 @@
 # Copyright (C)2013-2014 the OpenProject Foundation (OPF)
 # Copyright (C)2011 Stephan Eckardt, Tim Felgentreff, Marnen Laibow-Koser, Sandro Munda
 # Copyright (C)2010-2011 friflaj
-# Copyright (C)2010 Maxime Guilbot, Andrew Vit, Joakim Kolsjö, ibussieres, Daniel Passos, Jason Vasquez, jpic, Emiliano Heyns
+# Copyright (C)2010 Maxime Guilbot, Andrew Vit, Joakim Kolsjö, ibussieres,
+#                   Daniel Passos, Jason Vasquez, jpic, Emiliano Heyns
 # Copyright (C)2009-2010 Mark Maglana
 # Copyright (C)2009 Joe Heck, Nate Lowrie
 #
@@ -81,11 +82,12 @@ describe Story, type: :model do
   before(:each) do
     ActionController::Base.perform_caching = false
 
-    allow(Setting).to receive(:plugin_openproject_backlogs).and_return({ 'points_burn_direction' => 'down',
-                                                                         'wiki_template'         => '',
-                                                                         'card_spec'             => 'Sattleford VM-5040',
-                                                                         'story_types'           => [type_feature.id.to_s],
-                                                                         'task_type'             => task_type.id.to_s })
+    allow(Setting).to receive(:plugin_openproject_backlogs)
+                        .and_return({ 'points_burn_direction' => 'down',
+                                      'wiki_template'         => '',
+                                      'card_spec'             => 'Sattleford VM-5040',
+                                      'story_types'           => [type_feature.id.to_s],
+                                      'task_type'             => task_type.id.to_s })
     project.types << task_type
   end
 
@@ -111,8 +113,12 @@ describe Story, type: :model do
           story2.save!
         end
 
-        it { expect(Story.backlogs(project, [version.id, version2.id])[version.id]).to match_array([story1]) }
-        it { expect(Story.backlogs(project, [version.id, version2.id])[version2.id]).to match_array([story2]) }
+        it {
+          expect(Story.backlogs(project, [version.id, version2.id])[version.id]).to match_array([story1])
+        }
+        it {
+          expect(Story.backlogs(project, [version.id, version2.id])[version2.id]).to match_array([story2])
+        }
       end
 
       describe "WITH two sprints
@@ -215,7 +221,10 @@ describe Story, type: :model do
                                           priority: issue_priority)
       @story.project.enabled_module_names += ['backlogs']
 
-      @work_package ||= FactoryGirl.create(:work_package, project: project, status: status1, type: type_feature, author: @current)
+      @work_package ||= FactoryGirl.create(:work_package, project: project,
+                                                          status: status1,
+                                                          type: type_feature,
+                                                          author: @current)
     end
 
     it 'should create a journal when adding a subtask which has remaining hours set' do
@@ -227,7 +236,7 @@ describe Story, type: :model do
     end
 
     it 'should not create an empty journal when adding a subtask without remaining hours set' do
-      @work_package.parent_id  = @story.id
+      @work_package.parent_id = @story.id
       @work_package.save!
 
       expect(@story.journals.last.changed_data[:remaining_hours]).to be_nil

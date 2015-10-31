@@ -4,7 +4,8 @@
 # Copyright (C)2013-2014 the OpenProject Foundation (OPF)
 # Copyright (C)2011 Stephan Eckardt, Tim Felgentreff, Marnen Laibow-Koser, Sandro Munda
 # Copyright (C)2010-2011 friflaj
-# Copyright (C)2010 Maxime Guilbot, Andrew Vit, Joakim Kolsjö, ibussieres, Daniel Passos, Jason Vasquez, jpic, Emiliano Heyns
+# Copyright (C)2010 Maxime Guilbot, Andrew Vit, Joakim Kolsjö, ibussieres,
+#                   Daniel Passos, Jason Vasquez, jpic, Emiliano Heyns
 # Copyright (C)2009-2010 Mark Maglana
 # Copyright (C)2009 Joe Heck, Nate Lowrie
 #
@@ -241,7 +242,7 @@ Given /^the [pP]roject(?: "([^\"]*)")? has the following impediments:$/ do |proj
       blocks = Story.where(subject: impediment['blocks'].split(', ')).pluck(:id)
       params = initialize_impediment_params(project, sprint)
       params['subject'] = impediment['subject']
-      params['blocks_ids']  = blocks.join(',')
+      params['blocks_ids'] = blocks.join(',')
 
       # NOTE: We're bypassing the controller here because we're just
       # setting up the database for the actual tests. The actual tests,

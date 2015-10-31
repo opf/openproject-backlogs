@@ -4,7 +4,8 @@
 # Copyright (C)2013-2014 the OpenProject Foundation (OPF)
 # Copyright (C)2011 Stephan Eckardt, Tim Felgentreff, Marnen Laibow-Koser, Sandro Munda
 # Copyright (C)2010-2011 friflaj
-# Copyright (C)2010 Maxime Guilbot, Andrew Vit, Joakim Kolsjö, ibussieres, Daniel Passos, Jason Vasquez, jpic, Emiliano Heyns
+# Copyright (C)2010 Maxime Guilbot, Andrew Vit, Joakim Kolsjö, ibussieres,
+#                   Daniel Passos, Jason Vasquez, jpic, Emiliano Heyns
 # Copyright (C)2009-2010 Mark Maglana
 # Copyright (C)2009 Joe Heck, Nate Lowrie
 #
@@ -283,11 +284,12 @@ describe WorkPackage, "fixed version restricted by an work_package parents (if i
   before(:each) do
     project.save!
 
-    allow(Setting).to receive(:plugin_openproject_backlogs).and_return({ 'points_burn_direction' => 'down',
-                                                                         'wiki_template'         => '',
-                                                                         'card_spec'             => 'Sattleford VM-5040',
-                                                                         'story_types'           => [type_feature.id],
-                                                                         'task_type'             => type_task.id.to_s })
+    allow(Setting).to receive(:plugin_openproject_backlogs)
+                        .and_return({ 'points_burn_direction' => 'down',
+                                      'wiki_template'         => '',
+                                      'card_spec'             => 'Sattleford VM-5040',
+                                      'story_types'           => [type_feature.id],
+                                      'task_type'             => type_task.id.to_s })
   end
 
   describe 'WITH a story' do

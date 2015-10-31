@@ -4,7 +4,8 @@
 # Copyright (C)2013-2014 the OpenProject Foundation (OPF)
 # Copyright (C)2011 Stephan Eckardt, Tim Felgentreff, Marnen Laibow-Koser, Sandro Munda
 # Copyright (C)2010-2011 friflaj
-# Copyright (C)2010 Maxime Guilbot, Andrew Vit, Joakim Kolsjö, ibussieres, Daniel Passos, Jason Vasquez, jpic, Emiliano Heyns
+# Copyright (C)2010 Maxime Guilbot, Andrew Vit, Joakim Kolsjö, ibussieres,
+#                   Daniel Passos, Jason Vasquez, jpic, Emiliano Heyns
 # Copyright (C)2009-2010 Mark Maglana
 # Copyright (C)2009 Joe Heck, Nate Lowrie
 #
@@ -72,11 +73,15 @@ class Impediment < Task
   end
 
   def remove_from_blocks_list
-    relations_from.delete(relations_from.select { |rel| rel.relation_type == Relation::TYPE_BLOCKS && !blocks_ids.include?(rel.to_id) })
+    relations_from.delete(relations_from.select { |rel|
+      rel.relation_type == Relation::TYPE_BLOCKS && !blocks_ids.include?(rel.to_id)
+    })
   end
 
   def add_to_blocks_list
-    currently_blocking = relations_from.select { |rel| rel.relation_type == Relation::TYPE_BLOCKS }.map(&:to_id)
+    currently_blocking = relations_from.select { |rel|
+      rel.relation_type == Relation::TYPE_BLOCKS
+    }.map(&:to_id)
 
     (blocks_ids - currently_blocking).each{ |id|
       rel = Relation.new(relation_type: Relation::TYPE_BLOCKS, from: self)
@@ -90,7 +95,9 @@ class Impediment < Task
       errors.add :blocks_ids, :must_block_at_least_one_work_package
     else
       work_packages = WorkPackage.where(id: blocks_ids)
-      errors.add :blocks_ids, :can_only_contain_work_packages_of_current_sprint if work_packages.size == 0 || work_packages.any? { |i| i.fixed_version != fixed_version }
+      if work_packages.size == 0 || work_packages.any? { |i| i.fixed_version != fixed_version }
+        errors.add :blocks_ids, :can_only_contain_work_packages_of_current_sprint
+      end
     end
   end
 end

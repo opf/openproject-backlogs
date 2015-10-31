@@ -4,7 +4,8 @@
 # Copyright (C)2013-2014 the OpenProject Foundation (OPF)
 # Copyright (C)2011 Stephan Eckardt, Tim Felgentreff, Marnen Laibow-Koser, Sandro Munda
 # Copyright (C)2010-2011 friflaj
-# Copyright (C)2010 Maxime Guilbot, Andrew Vit, Joakim Kolsjö, ibussieres, Daniel Passos, Jason Vasquez, jpic, Emiliano Heyns
+# Copyright (C)2010 Maxime Guilbot, Andrew Vit, Joakim Kolsjö, ibussieres,
+#                   Daniel Passos, Jason Vasquez, jpic, Emiliano Heyns
 # Copyright (C)2009-2010 Mark Maglana
 # Copyright (C)2009 Joe Heck, Nate Lowrie
 #
@@ -40,7 +41,10 @@ module VersionSettingsHelper
     content_tag :div, class: 'form--field' do
       [
         styled_label_tag(name_for_setting_attributes('display'), l(:label_column_in_backlog)),
-        styled_select_tag(name_for_setting_attributes('display'), options_for_select(position_display_options, setting.display)),
+        styled_select_tag(
+          name_for_setting_attributes('display'),
+          options_for_select(position_display_options, setting.display)
+        ),
         version_hidden_id_field(setting),
         hidden_field_tag('project_id', project.id)
       ].join.html_safe
@@ -55,10 +59,13 @@ module VersionSettingsHelper
   end
 
   def version_setting_for_project(version, project)
-    setting = version.version_settings.detect { |vs| vs.project_id == project.id || vs.project_id.nil? }
+    setting = version.version_settings.detect { |vs|
+      vs.project_id == project.id || vs.project_id.nil?
+    }
 
     # nil? because some settings in the active codebase do have that right now
-    setting ||= version.version_settings.new(display: VersionSetting::DISPLAY_LEFT, project: project)
+    setting ||= version.version_settings.new(display: VersionSetting::DISPLAY_LEFT,
+                                             project: project)
 
     setting
   end

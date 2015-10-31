@@ -144,7 +144,7 @@ See doc/COPYRIGHT.rdoc for more details.
     </div>
 
     <div id="work_package_editor"> </div>
-    <div class="meta" id="last_updated"><%= date_string_with_milliseconds( (@last_updated.blank? ? Time.now : @last_updated.updated_at) )  %></div>
+    <div class="meta" id="last_updated"><%= date_string_with_milliseconds( (@last_updated.blank? ? Time.zone.now : @last_updated.updated_at) )  %></div>
     <div id="charts"> </div>
     <div id="preloader">
       <div id="spinner"> </div>

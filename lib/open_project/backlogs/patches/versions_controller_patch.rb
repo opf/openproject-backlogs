@@ -4,7 +4,8 @@
 # Copyright (C)2013-2014 the OpenProject Foundation (OPF)
 # Copyright (C)2011 Stephan Eckardt, Tim Felgentreff, Marnen Laibow-Koser, Sandro Munda
 # Copyright (C)2010-2011 friflaj
-# Copyright (C)2010 Maxime Guilbot, Andrew Vit, Joakim Kolsjö, ibussieres, Daniel Passos, Jason Vasquez, jpic, Emiliano Heyns
+# Copyright (C)2010 Maxime Guilbot, Andrew Vit, Joakim Kolsjö, ibussieres,
+#                   Daniel Passos, Jason Vasquez, jpic, Emiliano Heyns
 # Copyright (C)2009-2010 Mark Maglana
 # Copyright (C)2009 Joe Heck, Nate Lowrie
 #
@@ -77,10 +78,10 @@ module OpenProject::Backlogs::Patches::VersionsControllerPatch
       # This forces the current project for the nested version settings in order
       # to prevent it from being set through firebug etc. #mass_assignment
       def add_project_to_version_settings_attributes
-        if  permitted_params.version['version_settings_attributes'].present?
-           permitted_params.version['version_settings_attributes'].each do |attr_hash|
-            attr_hash['project'] = @project
-          end
+        if permitted_params.version['version_settings_attributes'].present?
+          permitted_params.version['version_settings_attributes'].each do |attr_hash|
+           attr_hash['project'] = @project
+         end
         end
       end
     end

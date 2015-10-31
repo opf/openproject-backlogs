@@ -4,7 +4,8 @@
 # Copyright (C)2013-2014 the OpenProject Foundation (OPF)
 # Copyright (C)2011 Stephan Eckardt, Tim Felgentreff, Marnen Laibow-Koser, Sandro Munda
 # Copyright (C)2010-2011 friflaj
-# Copyright (C)2010 Maxime Guilbot, Andrew Vit, Joakim Kolsjö, ibussieres, Daniel Passos, Jason Vasquez, jpic, Emiliano Heyns
+# Copyright (C)2010 Maxime Guilbot, Andrew Vit, Joakim Kolsjö, ibussieres,
+#                   Daniel Passos, Jason Vasquez, jpic, Emiliano Heyns
 # Copyright (C)2009-2010 Mark Maglana
 # Copyright (C)2009 Joe Heck, Nate Lowrie
 #
@@ -41,7 +42,8 @@ class RbQueriesController < RbApplicationController
     if params[:sprint_id]
       filters.push(filter_object('status_id', '*'))
       filters.push(filter_object('fixed_version_id', '=', [params[:sprint_id]]))
-    # Note: We need a filter for backlogs_work_package_type but currently it's not possible for plugins to introduce new filter types
+    # Note: We need a filter for backlogs_work_package_type but currently it's
+    # not possible for plugins to introduce new filter types
     else
       filters.push(filter_object('status_id', 'o'))
       filters.push(filter_object('fixed_version_id', '!*', [params[:sprint_id]]))
