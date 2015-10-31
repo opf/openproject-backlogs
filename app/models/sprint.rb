@@ -58,17 +58,13 @@ class Sprint < Version
                                                " OR (#{Project.table_name}.lft > #{project.lft} AND #{Project.table_name}.rgt < #{project.rgt} AND #{Version.table_name}.sharing = 'hierarchy')" +
                                                "))"]}}
 
-  scope :displayed_left, lambda { |project| { :joins => sanitize_sql_array(["LEFT OUTER JOIN (SELECT * from #{VersionSetting.table_name}" +
-                                                                                  " WHERE project_id = ? ) version_settings" +
-                                                                                  " ON version_settings.version_id = versions.id",
-                                                                                  project.id]),
-                                                    :conditions => ["(version_settings.project_id = ? AND version_settings.display = ?)" +
-                                                                    " OR (version_settings.project_id is NULL)",
-                                                                    project.id, VersionSetting::DISPLAY_LEFT] } }
+  scope :displayed_left, lambda { |project| {:include => :version_settings,
+                                                    :conditions => ["version_settings.display = ?",
+                                                                    VersionSetting::DISPLAY_LEFT]} }
 
   scope :displayed_right, lambda { |project| {:include => :version_settings,
-                                                    :conditions => ["version_settings.project_id = ? AND version_settings.display = ?",
-                                                                    project.id, VersionSetting::DISPLAY_RIGHT]} }
+                                                    :conditions => ["version_settings.display = ?",
+                                                                    VersionSetting::DISPLAY_RIGHT]} }
 
   def stories(project, options = {} )
     Story.sprint_backlog(project, self, options)
