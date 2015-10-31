@@ -4,7 +4,8 @@
 # Copyright (C)2013-2014 the OpenProject Foundation (OPF)
 # Copyright (C)2011 Stephan Eckardt, Tim Felgentreff, Marnen Laibow-Koser, Sandro Munda
 # Copyright (C)2010-2011 friflaj
-# Copyright (C)2010 Maxime Guilbot, Andrew Vit, Joakim Kolsjö, ibussieres, Daniel Passos, Jason Vasquez, jpic, Emiliano Heyns
+# Copyright (C)2010 Maxime Guilbot, Andrew Vit, Joakim Kolsjö, ibussieres,
+#                   Daniel Passos, Jason Vasquez, jpic, Emiliano Heyns
 # Copyright (C)2009-2010 Mark Maglana
 # Copyright (C)2009 Joe Heck, Nate Lowrie
 #
@@ -88,11 +89,12 @@ describe Impediment, type: :model do
   before(:each) do
     ActionController::Base.perform_caching = false
 
-    allow(Setting).to receive(:plugin_openproject_backlogs).and_return({ 'points_burn_direction' => 'down',
-                                                                         'wiki_template'         => '',
-                                                                         'card_spec'             => 'Sattleford VM-5040',
-                                                                         'story_types'           => [type_feature.id.to_s],
-                                                                         'task_type'             => type_task.id.to_s })
+    allow(Setting).to receive(:plugin_openproject_backlogs)
+                        .and_return({ 'points_burn_direction' => 'down',
+                                      'wiki_template'         => '',
+                                      'card_spec'             => 'Sattleford VM-5040',
+                                      'story_types'           => [type_feature.id.to_s],
+                                      'task_type'             => type_task.id.to_s })
 
     allow(User).to receive(:current).and_return(user)
     issue_priority.save
@@ -164,7 +166,12 @@ describe Impediment, type: :model do
 
           it_should_behave_like 'impediment creation with no blocking relationship'
           it { expect(@impediment).to be_new_record }
-          it { expect(@impediment.errors[:blocks_ids]).to include I18n.t(:can_only_contain_work_packages_of_current_sprint, scope: [:activerecord, :errors, :models, :work_package, :attributes, :blocks_ids]) }
+          it {
+            expect(@impediment.errors[:blocks_ids]).to(
+              include I18n.t(:can_only_contain_work_packages_of_current_sprint,
+                             scope: [:activerecord, :errors, :models, :work_package, :attributes, :blocks_ids])
+            )
+          }
         end
 
         describe 'WITH the story being non existent' do
@@ -179,7 +186,12 @@ describe Impediment, type: :model do
 
           it_should_behave_like 'impediment creation with no blocking relationship'
           it { expect(@impediment).to be_new_record }
-          it { expect(@impediment.errors[:blocks_ids]).to include I18n.t(:can_only_contain_work_packages_of_current_sprint, scope: [:activerecord, :errors, :models, :work_package, :attributes, :blocks_ids]) }
+          it {
+            expect(@impediment.errors[:blocks_ids]).to(
+              include I18n.t(:can_only_contain_work_packages_of_current_sprint,
+                             scope: [:activerecord, :errors, :models, :work_package, :attributes, :blocks_ids])
+            )
+          }
         end
       end
 
@@ -195,7 +207,12 @@ describe Impediment, type: :model do
 
         it_should_behave_like 'impediment creation with no blocking relationship'
         it { expect(@impediment).to be_new_record }
-        it { expect(@impediment.errors[:blocks_ids]).to include I18n.t(:must_block_at_least_one_work_package, scope: [:activerecord, :errors, :models, :work_package, :attributes, :blocks_ids]) }
+        it {
+          expect(@impediment.errors[:blocks_ids]).to(
+            include I18n.t(:must_block_at_least_one_work_package,
+                           scope: [:activerecord, :errors, :models, :work_package, :attributes, :blocks_ids])
+          )
+        }
       end
     end
   end
@@ -276,7 +293,12 @@ describe Impediment, type: :model do
           it 'should not be saved successfully' do
             expect(@saved).to be_falsey
           end
-          it { expect(@impediment.errors[:blocks_ids]).to include I18n.t(:can_only_contain_work_packages_of_current_sprint, scope: [:activerecord, :errors, :models, :work_package, :attributes, :blocks_ids]) }
+          it {
+            expect(@impediment.errors[:blocks_ids]).to(
+              include I18n.t(:can_only_contain_work_packages_of_current_sprint,
+                             scope: [:activerecord, :errors, :models, :work_package, :attributes, :blocks_ids])
+            )
+          }
         end
 
         describe 'WITH the story beeing non existent' do
@@ -290,7 +312,12 @@ describe Impediment, type: :model do
           it 'should not be saved successfully' do
             expect(@saved).to be_falsey
           end
-          it { expect(@impediment.errors[:blocks_ids]).to include I18n.t(:can_only_contain_work_packages_of_current_sprint, scope: [:activerecord, :errors, :models, :work_package, :attributes, :blocks_ids]) }
+          it {
+            expect(@impediment.errors[:blocks_ids]).to(
+              include I18n.t(:can_only_contain_work_packages_of_current_sprint,
+                             scope: [:activerecord, :errors, :models, :work_package, :attributes, :blocks_ids])
+            )
+          }
         end
       end
 
@@ -306,7 +333,12 @@ describe Impediment, type: :model do
           expect(@saved).to be_falsey
         end
 
-        it { expect(@impediment.errors[:blocks_ids]).to include I18n.t(:must_block_at_least_one_work_package, scope: [:activerecord, :errors, :models, :work_package, :attributes, :blocks_ids]) }
+        it {
+          expect(@impediment.errors[:blocks_ids]).to(
+            include I18n.t(:must_block_at_least_one_work_package,
+                           scope: [:activerecord, :errors, :models, :work_package, :attributes, :blocks_ids])
+          )
+        }
       end
     end
 
@@ -339,8 +371,10 @@ describe Impediment, type: :model do
           task.fixed_version = version
           task.save
 
-          impediment.relations_from = [Relation.new(from: impediment, to: feature, relation_type: Relation::TYPE_BLOCKS),
-                                       Relation.new(from: impediment, to: task, relation_type: Relation::TYPE_BLOCKS)]
+          impediment.relations_from = [
+            Relation.new(from: impediment, to: feature, relation_type: Relation::TYPE_BLOCKS),
+            Relation.new(from: impediment, to: task, relation_type: Relation::TYPE_BLOCKS)
+          ]
           true
         end
 

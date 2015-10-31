@@ -4,7 +4,8 @@
 # Copyright (C)2013-2014 the OpenProject Foundation (OPF)
 # Copyright (C)2011 Stephan Eckardt, Tim Felgentreff, Marnen Laibow-Koser, Sandro Munda
 # Copyright (C)2010-2011 friflaj
-# Copyright (C)2010 Maxime Guilbot, Andrew Vit, Joakim Kolsjö, ibussieres, Daniel Passos, Jason Vasquez, jpic, Emiliano Heyns
+# Copyright (C)2010 Maxime Guilbot, Andrew Vit, Joakim Kolsjö, ibussieres,
+#                   Daniel Passos, Jason Vasquez, jpic, Emiliano Heyns
 # Copyright (C)2009-2010 Mark Maglana
 # Copyright (C)2009 Joe Heck, Nate Lowrie
 #
@@ -55,10 +56,13 @@ class RbImpedimentsController < RbApplicationController
     end
   end
 
-private
+  private
 
   def impediment_params(instance = nil)
-    if instance && instance.new_record? && (user.allowed_to?(:create_impediments, instance.project) || user.allowed_to?(:update_impediments, impediment.project))
+    if instance && instance.new_record? &&
+       (user.allowed_to?(:create_impediments, instance.project) ||
+        user.allowed_to?(:update_impediments, impediment.project)
+       )
       params.permit 'blocks_ids'
     end
   end

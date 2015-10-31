@@ -4,7 +4,8 @@
 # Copyright (C)2013-2014 the OpenProject Foundation (OPF)
 # Copyright (C)2011 Stephan Eckardt, Tim Felgentreff, Marnen Laibow-Koser, Sandro Munda
 # Copyright (C)2010-2011 friflaj
-# Copyright (C)2010 Maxime Guilbot, Andrew Vit, Joakim Kolsjö, ibussieres, Daniel Passos, Jason Vasquez, jpic, Emiliano Heyns
+# Copyright (C)2010 Maxime Guilbot, Andrew Vit, Joakim Kolsjö, ibussieres,
+#                   Daniel Passos, Jason Vasquez, jpic, Emiliano Heyns
 # Copyright (C)2009-2010 Mark Maglana
 # Copyright (C)2009 Joe Heck, Nate Lowrie
 #
@@ -40,11 +41,12 @@ describe WorkPackagesController, type: :controller do
     allow(User).to receive(:current).and_return current_user
     # disables sending mails
     allow(UserMailer).to receive(:new).and_return(double('mailer').as_null_object)
-    allow(Setting).to receive(:plugin_openproject_backlogs).and_return('points_burn_direction' => 'down',
-                                                                       'wiki_template'         => '',
-                                                                       'card_spec'             => 'Sattleford VM-5040',
-                                                                       'story_types'           => [story_type.id.to_s],
-                                                                       'task_type'             => task_type.id.to_s)
+    allow(Setting).to receive(:plugin_openproject_backlogs)
+                        .and_return('points_burn_direction' => 'down',
+                                    'wiki_template'         => '',
+                                    'card_spec'             => 'Sattleford VM-5040',
+                                    'story_types'           => [story_type.id.to_s],
+                                    'task_type'             => task_type.id.to_s)
     [task, story, closed_task].map(&:reload)
   end
 
@@ -54,9 +56,26 @@ describe WorkPackagesController, type: :controller do
   let(:closed) { FactoryGirl.create :closed_status }
   let(:story_type) { FactoryGirl.create(:type_feature) }
   let(:task_type) { FactoryGirl.create(:type_feature) }
-  let(:story) { FactoryGirl.create(:story, type: story_type, author: current_user, project: project, status: status) }
-  let(:task) { FactoryGirl.create(:story, type: task_type, author: current_user, project: project, status: status, parent: story) }
-  let(:closed_task) { FactoryGirl.create(:story, type: task_type, author: current_user, project: project, status: closed, parent: story) }
+  let(:story) {
+    FactoryGirl.create(:story, type: story_type,
+                               author: current_user,
+                               project: project,
+                               status: status)
+  }
+  let(:task) {
+    FactoryGirl.create(:story, type: task_type,
+                               author: current_user,
+                               project: project,
+                               status: status,
+                               parent: story)
+  }
+  let(:closed_task) {
+    FactoryGirl.create(:story, type: task_type,
+                               author: current_user,
+                               project: project,
+                               status: closed,
+                               parent: story)
+  }
   let(:params) { { copy_from: story.id, project_id: project.id } }
 
   describe 'show' do

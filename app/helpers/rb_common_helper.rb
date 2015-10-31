@@ -4,7 +4,8 @@
 # Copyright (C)2013-2014 the OpenProject Foundation (OPF)
 # Copyright (C)2011 Stephan Eckardt, Tim Felgentreff, Marnen Laibow-Koser, Sandro Munda
 # Copyright (C)2010-2011 friflaj
-# Copyright (C)2010 Maxime Guilbot, Andrew Vit, Joakim Kolsjö, ibussieres, Daniel Passos, Jason Vasquez, jpic, Emiliano Heyns
+# Copyright (C)2010 Maxime Guilbot, Andrew Vit, Joakim Kolsjö, ibussieres,
+#                   Daniel Passos, Jason Vasquez, jpic, Emiliano Heyns
 # Copyright (C)2009-2010 Mark Maglana
 # Copyright (C)2009 Joe Heck, Nate Lowrie
 #
@@ -39,7 +40,8 @@ module RbCommonHelper
   end
 
   def assignee_name_or_empty(story)
-    story.blank? || story.assigned_to.blank? ? '' : "#{story.assigned_to.firstname} #{story.assigned_to.lastname}"
+    story.blank? ||
+    story.assigned_to.blank? ? '' : "#{story.assigned_to.firstname} #{story.assigned_to.lastname}"
   end
 
   def blocks_ids(ids)
@@ -70,7 +72,7 @@ module RbCommonHelper
 
   def background_color_hex(task)
     background_color = get_backlogs_preference(task.assigned_to, :task_color)
-    background_color_hex = background_color.sub(/\#/, '0x').hex
+    background_color.sub(/\#/, '0x').hex
   end
 
   def id_or_empty(item)
@@ -83,7 +85,9 @@ module RbCommonHelper
   end
 
   def work_package_link_or_empty(work_package)
-    modal_link_to_work_package(work_package.id, work_package, class: 'prevent_edit') unless work_package.new_record?
+    unless work_package.new_record?
+      modal_link_to_work_package(work_package.id, work_package, class: 'prevent_edit')
+    end
   end
 
   def modal_link_to_work_package(title, work_package, options = {})

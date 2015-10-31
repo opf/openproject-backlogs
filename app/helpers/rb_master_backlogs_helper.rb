@@ -4,7 +4,8 @@
 # Copyright (C)2013-2014 the OpenProject Foundation (OPF)
 # Copyright (C)2011 Stephan Eckardt, Tim Felgentreff, Marnen Laibow-Koser, Sandro Munda
 # Copyright (C)2010-2011 friflaj
-# Copyright (C)2010 Maxime Guilbot, Andrew Vit, Joakim Kolsjö, ibussieres, Daniel Passos, Jason Vasquez, jpic, Emiliano Heyns
+# Copyright (C)2010 Maxime Guilbot, Andrew Vit, Joakim Kolsjö, ibussieres,
+#                   Daniel Passos, Jason Vasquez, jpic, Emiliano Heyns
 # Copyright (C)2009-2010 Mark Maglana
 # Copyright (C)2009 Joe Heck, Nate Lowrie
 #
@@ -57,7 +58,8 @@ module RbMasterBacklogsHelper
     end
 
     menu = []
-    [:new_story, :stories_tasks, :task_board, :burndown, :cards, :wiki, :configs, :properties].each do |key|
+    [:new_story, :stories_tasks, :task_board, :burndown,
+     :cards, :wiki, :configs, :properties].each do |key|
       menu << items[key] if items.keys.include?(key)
     end
 
@@ -114,7 +116,11 @@ module RbMasterBacklogsHelper
   def export_modal_link(backlog, options = {})
     path = backlogs_project_sprint_export_card_configurations_path(@project.id, backlog.sprint.id)
     html_id = "modal_work_package_#{SecureRandom.hex(10)}"
-    link_to(l(:label_backlogs_export_card_export), path, options.merge(id: html_id, :'data-modal' => ''))
+    link_to(
+      l(:label_backlogs_export_card_export),
+      path,
+      options.merge(id: html_id, 'data-modal': '')
+    )
   end
 
   def sprint_backlog_menu_items_for(backlog)

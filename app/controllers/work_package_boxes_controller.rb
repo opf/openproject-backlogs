@@ -4,7 +4,8 @@
 # Copyright (C)2013-2014 the OpenProject Foundation (OPF)
 # Copyright (C)2011 Stephan Eckardt, Tim Felgentreff, Marnen Laibow-Koser, Sandro Munda
 # Copyright (C)2010-2011 friflaj
-# Copyright (C)2010 Maxime Guilbot, Andrew Vit, Joakim Kolsjö, ibussieres, Daniel Passos, Jason Vasquez, jpic, Emiliano Heyns
+# Copyright (C)2010 Maxime Guilbot, Andrew Vit, Joakim Kolsjö, ibussieres,
+#                   Daniel Passos, Jason Vasquez, jpic, Emiliano Heyns
 # Copyright (C)2009-2010 Mark Maglana
 # Copyright (C)2009 Joe Heck, Nate Lowrie
 #
@@ -42,7 +43,9 @@ class WorkPackageBoxesController < WorkPackagesController
     load_journals
     @changesets = @work_package.changesets.visible.all
     @changesets.reverse! if User.current.wants_comments_in_reverse_order?
-    @relations = @work_package.relations.select { |r| r.other_work_package(@work_package) && r.other_work_package(@work_package).visible? }
+    @relations = @work_package.relations.select { |r|
+      r.other_work_package(@work_package) && r.other_work_package(@work_package).visible?
+    }
     @allowed_statuses = @work_package.new_statuses_allowed_to(User.current)
     @edit_allowed = User.current.allowed_to?(:edit_work_packages, @project)
     @priorities = IssuePriority.all

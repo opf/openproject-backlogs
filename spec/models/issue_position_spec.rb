@@ -4,7 +4,8 @@
 # Copyright (C)2013-2014 the OpenProject Foundation (OPF)
 # Copyright (C)2011 Stephan Eckardt, Tim Felgentreff, Marnen Laibow-Koser, Sandro Munda
 # Copyright (C)2010-2011 friflaj
-# Copyright (C)2010 Maxime Guilbot, Andrew Vit, Joakim Kolsjö, ibussieres, Daniel Passos, Jason Vasquez, jpic, Emiliano Heyns
+# Copyright (C)2010 Maxime Guilbot, Andrew Vit, Joakim Kolsjö, ibussieres,
+#                   Daniel Passos, Jason Vasquez, jpic, Emiliano Heyns
 # Copyright (C)2009-2010 Mark Maglana
 # Copyright (C)2009 Joe Heck, Nate Lowrie
 #
@@ -49,7 +50,7 @@ describe WorkPackage, type: :model do
       build_work_package(options).tap(&:save!)
     end
 
-    let(:status)   { FactoryGirl.create(:status)    }
+    let(:status)   { FactoryGirl.create(:status) }
     let(:priority) { FactoryGirl.create(:priority_normal) }
     let(:project)  { FactoryGirl.create(:project)         }
 
@@ -71,12 +72,12 @@ describe WorkPackage, type: :model do
     let(:work_package_b) { create_work_package(subject: 'WorkPackage b', fixed_version_id: sprint_2.id) }
     let(:work_package_c) { create_work_package(subject: 'WorkPackage c', fixed_version_id: sprint_2.id) }
 
-    let(:feedback_1)  {
+    let(:feedback_1) {
       create_work_package(subject: 'Feedback 1', fixed_version_id: sprint_1.id,
                           type_id: other_type.id)
     }
 
-    let(:task_1)  {
+    let(:task_1) {
       create_work_package(subject: 'Task 1', fixed_version_id: sprint_1.id,
                           type_id: task_type.id)
     }
@@ -95,7 +96,9 @@ describe WorkPackage, type: :model do
 
       # Enable and configure backlogs
       project.enabled_module_names = project.enabled_module_names + ['backlogs']
-      allow(Setting).to receive(:plugin_openproject_backlogs).and_return({ 'story_types' => [story_type.id, epic_type.id], 'task_type'   => task_type.id })
+      allow(Setting).to receive(:plugin_openproject_backlogs)
+                          .and_return({ 'story_types' => [story_type.id, epic_type.id],
+                                        'task_type' => task_type.id })
 
       # Otherwise the type id's from the previous test are still active
       WorkPackage.instance_variable_set(:@backlogs_types, nil)
@@ -118,16 +121,21 @@ describe WorkPackage, type: :model do
 
     describe '- Creating a work_package in a sprint' do
       it 'adds it to the bottom of the list' do
-        new_work_package = create_work_package(subject: 'Newest WorkPackage', fixed_version_id: sprint_1.id)
+        new_work_package = create_work_package(subject: 'Newest WorkPackage',
+                                               fixed_version_id: sprint_1.id)
 
         expect(new_work_package).not_to be_new_record
         expect(new_work_package).to be_last
       end
 
       it 'does not reorder the existing work_packages' do
-        new_work_package = create_work_package(subject: 'Newest WorkPackage', fixed_version_id: sprint_1.id)
+        create_work_package(subject: 'Newest WorkPackage', fixed_version_id: sprint_1.id)
 
-        expect([work_package_1, work_package_2, work_package_3, work_package_4, work_package_5].each(&:reload).map(&:position)).to eq([1, 2, 3, 4, 5])
+        expect(
+          [work_package_1, work_package_2, work_package_3, work_package_4, work_package_5]
+            .each(&:reload)
+            .map(&:position)
+        ).to eq([1, 2, 3, 4, 5])
       end
     end
 
@@ -136,7 +144,9 @@ describe WorkPackage, type: :model do
         work_package_2.fixed_version = sprint_2
         work_package_2.save!
 
-        expect(sprint_1.fixed_issues.order('id')).to eq([work_package_1, work_package_3, work_package_4, work_package_5])
+        expect(sprint_1.fixed_issues.order('id')).to eq(
+          [work_package_1, work_package_3, work_package_4, work_package_5]
+        )
         expect(sprint_1.fixed_issues.order('id').each(&:reload).map(&:position)).to eq([1, 2, 3, 4])
       end
     end
@@ -153,7 +163,11 @@ describe WorkPackage, type: :model do
         work_package_a.fixed_version = sprint_1
         work_package_a.save!
 
-        expect([work_package_1, work_package_2, work_package_3, work_package_4, work_package_5].each(&:reload).map(&:position)).to eq([1, 2, 3, 4, 5])
+        expect(
+          [work_package_1, work_package_2, work_package_3, work_package_4, work_package_5]
+            .each(&:reload)
+            .map(&:position)
+        ).to eq([1, 2, 3, 4, 5])
       end
     end
 
@@ -161,7 +175,11 @@ describe WorkPackage, type: :model do
       it 'reorders the existing work_packages' do
         work_package_3.destroy
 
-        expect([work_package_1, work_package_2, work_package_4, work_package_5].each(&:reload).map(&:position)).to eq([1, 2, 3, 4])
+        expect(
+          [work_package_1, work_package_2, work_package_4, work_package_5]
+          .each(&:reload)
+          .map(&:position)
+        ).to eq([1, 2, 3, 4])
       end
     end
 
@@ -171,7 +189,11 @@ describe WorkPackage, type: :model do
           work_package_3.type = epic_type
           work_package_3.save!
 
-          expect([work_package_1, work_package_2, work_package_3, work_package_4, work_package_5].each(&:reload).map(&:position)).to eq([1, 2, 3, 4, 5])
+          expect(
+            [work_package_1, work_package_2, work_package_3, work_package_4, work_package_5]
+              .each(&:reload)
+              .map(&:position)
+          ).to eq([1, 2, 3, 4, 5])
         end
       end
 
@@ -187,7 +209,11 @@ describe WorkPackage, type: :model do
           work_package_3.type = other_type
           work_package_3.save!
 
-          expect([work_package_1, work_package_2, work_package_4, work_package_5].each(&:reload).map(&:position)).to eq([1, 2, 3, 4])
+          expect(
+            [work_package_1, work_package_2, work_package_4, work_package_5]
+              .each(&:reload)
+              .map(&:position)
+          ).to eq([1, 2, 3, 4])
         end
       end
 
@@ -203,7 +229,11 @@ describe WorkPackage, type: :model do
           work_package_3.type = task_type
           work_package_3.save!
 
-          expect([work_package_1, work_package_2, work_package_4, work_package_5].each(&:reload).map(&:position)).to eq([1, 2, 3, 4])
+          expect(
+            [work_package_1, work_package_2, work_package_4, work_package_5]
+              .each(&:reload)
+              .map(&:position)
+          ).to eq([1, 2, 3, 4])
         end
       end
 
@@ -219,7 +249,11 @@ describe WorkPackage, type: :model do
           task_1.type = story_type
           task_1.save!
 
-          expect([work_package_1, work_package_2, work_package_3, work_package_4, work_package_5, task_1].each(&:reload).map(&:position)).to eq([1, 2, 3, 4, 5, 6])
+          expect(
+            [work_package_1, work_package_2, work_package_3, work_package_4, work_package_5, task_1]
+              .each(&:reload)
+              .map(&:position)
+          ).to eq([1, 2, 3, 4, 5, 6])
         end
       end
 
@@ -235,7 +269,11 @@ describe WorkPackage, type: :model do
           feedback_1.type = story_type
           feedback_1.save!
 
-          expect([work_package_1, work_package_2, work_package_3, work_package_4, work_package_5, feedback_1].each(&:reload).map(&:position)).to eq([1, 2, 3, 4, 5, 6])
+          expect(
+            [work_package_1, work_package_2, work_package_3, work_package_4, work_package_5, feedback_1]
+              .each(&:reload)
+              .map(&:position)
+          ).to eq([1, 2, 3, 4, 5, 6])
         end
       end
     end
@@ -249,7 +287,7 @@ describe WorkPackage, type: :model do
       let(:project_wo_backlogs) { FactoryGirl.create(:project) }
       let(:sub_project_wo_backlogs) { FactoryGirl.create(:project) }
 
-      let(:shared_sprint)   {
+      let(:shared_sprint) {
         FactoryGirl.create(:version,
                            project_id: project.id,
                            name: 'Shared Sprint',
@@ -362,16 +400,20 @@ describe WorkPackage, type: :model do
 
             expect(result).to be_truthy
 
-            expect([work_package_1, work_package_2, work_package_4, work_package_5].each(&:reload).map(&:position)).to eq([1, 2, 3, 4])
+            expect(
+              [work_package_1, work_package_2, work_package_4, work_package_5]
+                .each(&:reload)
+                .map(&:position)
+            ).to eq([1, 2, 3, 4])
           end
         end
 
         describe 'if the fixed_version may be kept' do
-          let(:work_package_i)   {
+          let(:work_package_i) {
             create_work_package(subject: 'WorkPackage I',
                                 fixed_version_id: shared_sprint.id)
           }
-          let(:work_package_ii)  {
+          let(:work_package_ii) {
             create_work_package(subject: 'WorkPackage II',
                                 fixed_version_id: shared_sprint.id)
           }
@@ -385,7 +427,8 @@ describe WorkPackage, type: :model do
             work_package_ii.move_to_bottom
             work_package_iii.move_to_bottom
 
-            expect([work_package_i, work_package_ii, work_package_iii].map(&:position)).to eq([1, 2, 3])
+            expect(
+              [work_package_i, work_package_ii, work_package_iii].map(&:position)).to eq([1, 2, 3])
           end
 
           it 'keeps the fixed_version_id' do
@@ -409,7 +452,8 @@ describe WorkPackage, type: :model do
 
             expect(result).to be_truthy
 
-            expect([work_package_i, work_package_iii].each(&:reload).map(&:position)).to eq([1, 2])
+            expect(
+              [work_package_i, work_package_iii].each(&:reload).map(&:position)).to eq([1, 2])
           end
         end
       end

@@ -4,7 +4,8 @@
 # Copyright (C)2013-2014 the OpenProject Foundation (OPF)
 # Copyright (C)2011 Stephan Eckardt, Tim Felgentreff, Marnen Laibow-Koser, Sandro Munda
 # Copyright (C)2010-2011 friflaj
-# Copyright (C)2010 Maxime Guilbot, Andrew Vit, Joakim Kolsjö, ibussieres, Daniel Passos, Jason Vasquez, jpic, Emiliano Heyns
+# Copyright (C)2010 Maxime Guilbot, Andrew Vit, Joakim Kolsjö, ibussieres,
+#                   Daniel Passos, Jason Vasquez, jpic, Emiliano Heyns
 # Copyright (C)2009-2010 Mark Maglana
 # Copyright (C)2009 Joe Heck, Nate Lowrie
 #
@@ -45,7 +46,9 @@ module OpenProject::Backlogs::Patches::WorkPackagePatch
       before_validation :backlogs_before_validation, if: lambda { |i| i.backlogs_enabled? }
 
       before_save :inherit_version_from_closest_story_or_impediment, if: lambda { |i| i.is_task? }
-      after_save :inherit_version_to_descendants, if: lambda { |i| (i.fixed_version_id_changed? && i.backlogs_enabled? && i.closest_story_or_impediment == i) }
+      after_save :inherit_version_to_descendants, if: lambda { |i|
+        i.fixed_version_id_changed? && i.backlogs_enabled? && i.closest_story_or_impediment == i
+      }
       after_move :inherit_version_to_descendants, if: lambda { |i| i.is_task? }
 
       register_on_journal_formatter(:fraction, 'remaining_hours')
@@ -61,7 +64,9 @@ module OpenProject::Backlogs::Patches::WorkPackagePatch
       validates_numericality_of :remaining_hours, only_integer: false,
                                                   allow_nil: true,
                                                   greater_than_or_equal_to: 0,
-                                                  if: lambda { |i| i.project && i.project.module_enabled?('backlogs') }
+                                                  if: lambda { |i|
+                                                    i.project && i.project.module_enabled?('backlogs')
+                                                  }
 
       validates_each :parent_id do |record, attr, value|
         validate_parent_work_package_relation(record, attr, value)

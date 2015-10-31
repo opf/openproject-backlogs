@@ -4,7 +4,8 @@
 # Copyright (C)2013-2014 the OpenProject Foundation (OPF)
 # Copyright (C)2011 Stephan Eckardt, Tim Felgentreff, Marnen Laibow-Koser, Sandro Munda
 # Copyright (C)2010-2011 friflaj
-# Copyright (C)2010 Maxime Guilbot, Andrew Vit, Joakim Kolsjö, ibussieres, Daniel Passos, Jason Vasquez, jpic, Emiliano Heyns
+# Copyright (C)2010 Maxime Guilbot, Andrew Vit, Joakim Kolsjö, ibussieres,
+#                   Daniel Passos, Jason Vasquez, jpic, Emiliano Heyns
 # Copyright (C)2009-2010 Mark Maglana
 # Copyright (C)2009 Joe Heck, Nate Lowrie
 #
@@ -54,9 +55,10 @@ module BurndownChartsHelper
     # 14 entries (plus the axis label) have come along as the best value for a good optical result.
     # Thus it is enough space between the entries.
     entries_displayed = (burndown.days.length / 14.0).ceil
-    result = burndown.days.enum_for(:each_with_index).map do |d, i|
+    burndown.days.enum_for(:each_with_index).map do |d, i|
       if ((i % entries_displayed) == 0)
-        "[#{i + 1}, '#{escape_javascript(::I18n.t('date.abbr_day_names')[d.wday % 7])} #{d.strftime('%d/%m')}']"
+        js_var = escape_javascript(::I18n.t('date.abbr_day_names')[d.wday % 7])
+        "[#{i + 1}, '#{js_var} #{d.strftime('%d/%m')}']"
       end
     end.join(',').html_safe +
       ", [#{burndown.days.length + 1},
@@ -64,13 +66,21 @@ module BurndownChartsHelper
   end
 
   def dataseries(burndown)
-    burndown.series.map { |s| "#{s.first}: {label: '#{l('backlogs.' + s.first.to_s)}', data: [#{s.last.enum_for(:each_with_index).map { |s, i| "[#{i + 1}, #{s}] " }.join(', ')}]} " }.join(', ').html_safe
+    burndown.series.map { |s|
+      data_mapping = s.last.enum_for(:each_with_index).map { |s, i|
+        "[#{i + 1}, #{s}] "
+      }.join(', ')
+      "#{s.first}: {label: '#{l('backlogs.' + s.first.to_s)}', data: [#{data_mapping}]} "
+    }.join(', ').html_safe
   end
 
   def burndown_series_checkboxes(burndown)
     boxes = ''
     burndown.series(:all).map { |s| s.first.to_s }.sort.each do |series|
-      boxes += "<input class=\"series_enabled\" type=\"checkbox\" id=\"#{series}\" name=\"#{series}\" value=\"#{series}\" checked>#{l('backlogs.' + series.to_s)}<br/>"
+      boxes += %Q{
+        <input class="series_enabled" type="checkbox" id="#{series}" name="#{series}"
+        value="#{series}" checked>#{l('backlogs.' + series.to_s)}<br/>
+        }
     end
     boxes.html_safe
   end

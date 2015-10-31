@@ -49,7 +49,7 @@ describe 'work_packages/show', type: :view do
                       story_points: story_points)
   }
 
-  before  do allow(User).to receive(:current).and_return(user) end
+  before do allow(User).to receive(:current).and_return(user) end
 
   describe 'work_packages/attributes' do
     before do

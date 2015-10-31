@@ -4,7 +4,8 @@
 # Copyright (C)2013-2014 the OpenProject Foundation (OPF)
 # Copyright (C)2011 Stephan Eckardt, Tim Felgentreff, Marnen Laibow-Koser, Sandro Munda
 # Copyright (C)2010-2011 friflaj
-# Copyright (C)2010 Maxime Guilbot, Andrew Vit, Joakim Kolsjö, ibussieres, Daniel Passos, Jason Vasquez, jpic, Emiliano Heyns
+# Copyright (C)2010 Maxime Guilbot, Andrew Vit, Joakim Kolsjö, ibussieres,
+#                   Daniel Passos, Jason Vasquez, jpic, Emiliano Heyns
 # Copyright (C)2009-2010 Mark Maglana
 # Copyright (C)2009 Joe Heck, Nate Lowrie
 #
@@ -38,18 +39,22 @@ require 'spec_helper'
 describe RbExportCardConfigurationsController, type: :routing do
   describe 'routing' do
     it {
-      expect(get('/projects/project_42/sprints/21/export_card_configurations/10')).to route_to(controller: 'rb_export_card_configurations',
-                                                                                               action: 'show',
-                                                                                               project_id: 'project_42',
-                                                                                               sprint_id: '21',
-                                                                                               id: '10')
+      expect(
+        get('/projects/project_42/sprints/21/export_card_configurations/10')
+      ).to route_to(controller: 'rb_export_card_configurations',
+                    action: 'show',
+                    project_id: 'project_42',
+                    sprint_id: '21',
+                    id: '10')
     }
 
     it {
-      expect(get('/projects/project_42/sprints/21/export_card_configurations')).to route_to(controller: 'rb_export_card_configurations',
-                                                                                            action: 'index',
-                                                                                            project_id: 'project_42',
-                                                                                            sprint_id: '21')
+      expect(
+        get('/projects/project_42/sprints/21/export_card_configurations')
+      ).to route_to(controller: 'rb_export_card_configurations',
+                    action: 'index',
+                    project_id: 'project_42',
+                    sprint_id: '21')
     }
   end
 end

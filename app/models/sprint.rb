@@ -4,7 +4,8 @@
 # Copyright (C)2013-2014 the OpenProject Foundation (OPF)
 # Copyright (C)2011 Stephan Eckardt, Tim Felgentreff, Marnen Laibow-Koser, Sandro Munda
 # Copyright (C)2010-2011 friflaj
-# Copyright (C)2010 Maxime Guilbot, Andrew Vit, Joakim Kolsjö, ibussieres, Daniel Passos, Jason Vasquez, jpic, Emiliano Heyns
+# Copyright (C)2010 Maxime Guilbot, Andrew Vit, Joakim Kolsjö, ibussieres,
+#                   Daniel Passos, Jason Vasquez, jpic, Emiliano Heyns
 # Copyright (C)2009-2010 Mark Maglana
 # Copyright (C)2009 Joe Heck, Nate Lowrie
 #
@@ -65,7 +66,7 @@ class Sprint < Version
     joins(sanitize_sql_array(["LEFT OUTER JOIN (SELECT * from #{VersionSetting.table_name}" +
                                                            ' WHERE project_id = ? ) version_settings' +
                                                            ' ON version_settings.version_id = versions.id',
-                                 project.id]))
+                              project.id]))
       .where(['(version_settings.project_id = ? AND version_settings.display = ?)' +
               ' OR (version_settings.project_id is NULL)',
               project.id, VersionSetting::DISPLAY_LEFT])
@@ -106,7 +107,7 @@ class Sprint < Version
     page = project.wiki.find_page(wiki_page_title)
     template = project.wiki.find_page(Setting.plugin_openproject_backlogs['wiki_template'])
 
-    if template and not page
+    if template and !page
       page = project.wiki.pages.build(title: wiki_page_title)
       page.build_content(text: "h1. #{name}\n\n#{template.text}")
       page.save!
@@ -135,7 +136,7 @@ class Sprint < Version
     return true if bd.remaining_hours.size <= 2
 
     WorkPackage.exists?(['fixed_version_id = ? and ((updated_on between ? and ?) or (created_on between ? and ?))',
-                         id, -2.days.from_now, Time.now, -2.days.from_now, Time.now])
+                         id, -2.days.from_now, Time.zone.now, -2.days.from_now, Time.zone.now])
   end
 
   def burndown(project, burn_direction = nil)
@@ -146,12 +147,12 @@ class Sprint < Version
 
   def self.generate_burndown(only_current = true)
     if only_current
-      conditions = ['? BETWEEN start_date AND effective_date', Date.today]
+      conditions = ['? BETWEEN start_date AND effective_date', Time.zone.today]
     else
       conditions = '1 = 1'
     end
 
-    Version.where(conditions).each(&:burndown)
+    Version.where(conditions).find_each(&:burndown)
   end
 
   def impediments(project)

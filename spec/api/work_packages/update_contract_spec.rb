@@ -36,7 +36,7 @@ describe ::API::V3::WorkPackages::UpdateContract do
                        project: project)
   end
   let(:member) { FactoryGirl.create(:user, member_in_project: project, member_through_role: role) }
-  let (:project) { FactoryGirl.create(:project) }
+  let(:project) { FactoryGirl.create(:project) }
   let(:current_user) { member }
   let(:permissions) {
     [

@@ -4,7 +4,8 @@
 # Copyright (C)2013-2014 the OpenProject Foundation (OPF)
 # Copyright (C)2011 Stephan Eckardt, Tim Felgentreff, Marnen Laibow-Koser, Sandro Munda
 # Copyright (C)2010-2011 friflaj
-# Copyright (C)2010 Maxime Guilbot, Andrew Vit, Joakim Kolsjö, ibussieres, Daniel Passos, Jason Vasquez, jpic, Emiliano Heyns
+# Copyright (C)2010 Maxime Guilbot, Andrew Vit, Joakim Kolsjö, ibussieres,
+#                   Daniel Passos, Jason Vasquez, jpic, Emiliano Heyns
 # Copyright (C)2009-2010 Mark Maglana
 # Copyright (C)2009 Joe Heck, Nate Lowrie
 #
@@ -263,7 +264,7 @@ Then /^there should not be a saving error on task "(.+?)"$/ do |task_name|
   task_div[:class].should_not include('error')
 end
 
-Then /^I should be notified that the work_package "(.+?)" is an invalid parent to the work_package "(.+?)" because of cross project limitations$/ do |parent_name, child_name|
+Then /^I should be notified that the work_package "(.+?)" is an invalid parent to the work_package "(.+?)" because of cross project limitations$/ do |_parent_name, child_name|
   step %{I should see "Parent is invalid because the work package '#{child_name}' is a backlog task and therefore cannot have a parent outside of the current project." within "#errorExplanation"}
 end
 
