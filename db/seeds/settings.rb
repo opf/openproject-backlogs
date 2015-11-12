@@ -49,4 +49,6 @@ else
       story_types: story_types,
       task_type: task_type
   }.with_indifferent_access
+
+  Setting.default_projects_modules += ['backlogs']
 end
