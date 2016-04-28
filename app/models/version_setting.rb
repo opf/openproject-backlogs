@@ -34,7 +34,7 @@
 #++
 
 class VersionSetting < ActiveRecord::Base
-  belongs_to :project
+  belongs_to :project, touch: true
   belongs_to :version
 
   validates_presence_of :project
