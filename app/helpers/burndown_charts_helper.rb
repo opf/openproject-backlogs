@@ -64,7 +64,7 @@ module BurndownChartsHelper
   end
 
   def dataseries(burndown)
-    burndown.series.map { |s| "#{s.first}: {label: '#{l('backlogs.' + s.first.to_s)}', data: [#{s.last.enum_for(:each_with_index).map { |s, i| "[#{i + 1}, #{s}] " }.join(', ')}]} " }.join(', ').html_safe
+    burndown.series.map { |s| "#{s.first}: {label: '#{l('backlogs.' + %q[s.first.to_s].html_safe)}', data: [#{s.last.enum_for(:each_with_index).map { |s, i| "[#{i + 1}, #{s}] " }.join(', ')}]} " }.join(', ').html_safe
   end
 
   def burndown_series_checkboxes(burndown)
