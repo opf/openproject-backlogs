@@ -41,6 +41,10 @@ class RbTaskboardsController < RbApplicationController
   def show
     @statuses     = Type.find(Task.type).statuses
     @story_ids    = @sprint.stories(@project).map(&:id)
+    if params[:show_sub] and params[:show_sub].to_i == 1
+      @subprojects  = Project.active.where(parent_id: @project.id)
+      @subprojects.each{|p| @story_ids.concat(@sprint.stories(p).map(&:id)) }
+    end
     @last_updated = Task.where(parent_id: @story_ids)
                         .order('updated_at DESC')
                         .first

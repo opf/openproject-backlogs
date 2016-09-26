@@ -36,7 +36,7 @@
 module RbMasterBacklogsHelper
   include Redmine::I18n
 
-  def render_backlog_menu(backlog)
+  def render_backlog_menu(backlog, include_subprojects = false)
     closeJS = "jQuery(this).closest('ul').siblings('.menu-trigger').removeClass('open');"
     openJS = "jQuery(this).toggleClass('open');"
 
@@ -44,7 +44,7 @@ module RbMasterBacklogsHelper
       [
         content_tag(:div, '', class: "menu-trigger icon-context icon-small", onClick: openJS),
         content_tag(:ul, class: 'items') do
-          backlog_menu_items_for(backlog).map { |item|
+          backlog_menu_items_for(backlog, include_subprojects).map { |item|
             content_tag(:li, item, class: 'item', onClick: closeJS)
           }.join.html_safe
         end
@@ -52,11 +52,11 @@ module RbMasterBacklogsHelper
     end
   end
 
-  def backlog_menu_items_for(backlog)
+  def backlog_menu_items_for(backlog, include_subprojects = false)
     items = common_backlog_menu_items_for(backlog)
 
     if backlog.sprint_backlog?
-      items.merge!(sprint_backlog_menu_items_for(backlog))
+      items.merge!(sprint_backlog_menu_items_for(backlog, include_subprojects))
     end
 
     menu = []
@@ -120,14 +120,16 @@ module RbMasterBacklogsHelper
     link_to(l(:label_backlogs_export_card_export), path, options.merge(id: html_id, :'data-modal' => ''))
   end
 
-  def sprint_backlog_menu_items_for(backlog)
+  def sprint_backlog_menu_items_for(backlog, include_subprojects=false)
     items = {}
 
     items[:task_board] = link_to(l(:label_task_board),
                                  controller: '/rb_taskboards',
                                  action: 'show',
                                  project_id: @project,
-                                 sprint_id: backlog.sprint)
+                                 sprint_id: backlog.sprint,
+                                 show_sub: include_subprojects ? 1 : 0
+                                 )
 
     if backlog.sprint.has_burndown?
       items[:burndown] = content_tag(:a,

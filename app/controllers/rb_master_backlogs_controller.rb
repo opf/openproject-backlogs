@@ -40,8 +40,11 @@ class RbMasterBacklogsController < RbApplicationController
 
   def index
     @owner_backlogs = Backlog.owner_backlogs(@project)
-    @sprint_backlogs = Backlog.sprint_backlogs(@project)
-
+    unless params[:show_sub] and params[:show_sub].to_i == 1
+      @sprint_backlogs = Backlog.sprint_backlogs(@project)
+    else
+      @sprint_backlogs = Backlog.sprint_backlogs(@project,true)
+    end
     @last_update = (@sprint_backlogs + @owner_backlogs).map(&:updated_on).compact.max
   end
 

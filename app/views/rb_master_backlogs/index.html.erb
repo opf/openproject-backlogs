@@ -43,6 +43,16 @@ See doc/COPYRIGHT.rdoc for more details.
 <% html_title l(:label_backlogs) %>
 <%= toolbar title: l(:label_backlogs) %>
 
+<% if not params[:show_sub] or  params[:show_sub] != '1' %>
+  <%= link_to t(:backlogs_show_subprojects), url_for(params.merge(:show_sub => "1"))%>
+  </br>
+  </br>
+<% else %>
+  <%= link_to t(:backlogs_hide_subprojects), url_for(params.merge(:show_sub => "0"))%>
+  </br>
+  </br>
+<% end %>
+
 <div id="rb">
   <div id="backlogs_container" class="clearfix">
     <div id="owner_backlogs_container">

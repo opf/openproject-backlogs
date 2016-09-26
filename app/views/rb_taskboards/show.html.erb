@@ -55,6 +55,16 @@ See doc/COPYRIGHT.rdoc for more details.
 
 <% breadcrumb_paths(link_to(l(:label_backlogs), backlogs_project_backlogs_path(@project)), link_to(@sprint.name, backlogs_project_backlogs_path(@sprint))) %>
 
+<% if not params[:show_sub] or  params[:show_sub] != '1' %>
+  <%= link_to "show subprojects stories", url_for(params.merge(:show_sub => "1"))%>
+  </br>
+  </br>
+<% else %>
+  <%= link_to "hide subprojects stories", url_for(params.merge(:show_sub => "0"))%>
+  </br>
+  </br>
+<% end %>
+
 <div id='rb'>
   <div id="taskboard">
     <table id="board_header" cellspacing="0">
@@ -123,6 +133,50 @@ See doc/COPYRIGHT.rdoc for more details.
             </td>
           <% end %>
         </tr>
+      <% end %>
+      <% unless @subprojects.nil? %>
+        <% @subprojects.each do |subproject| %>
+          <% @sprint.stories(subproject).each do |story| %>
+            <tr class="<%= story_html_id_or_empty(story) %>">
+              <td>
+                <div class="story <%= mark_if_closed(story) %>" id="<%= story_html_id_or_empty(story) %>">
+                  <div class='story-bar'>
+                    <div class="status">
+                      <%= story.status.name %>
+                    </div>
+                    <div class="id">
+                      <%= work_package_link_or_empty(story) %>
+                    </div>
+                  </div>
+                  <div class="subject"><%= story.subject %></div>
+                  <div class='story-footer'>
+                    <div class="assigned_to_id">
+                      <% if story.assigned_to.present? %>
+                        <%= link_to_user(story.assigned_to) %>
+                      <% else %>
+                        <em><%= l('backlogs.unassigned') %></em>
+                      <% end %>
+                    </div>
+                    <div class="story-points">
+                      <%= story.story_points %>
+                    </div>
+                  </div>
+                </div>
+              </td>
+              <% if User.current.allowed_to?(:create_tasks, @project) %>
+                <td class ="add_new clickable">+</td>
+              <% else %>
+                <td class ="add_new"></td>
+              <% end %>
+              <% @statuses.each do |status| %>
+                <td class="swimlane list <%= status.is_closed? ? 'closed' : '' %>" id="<%= story.id %>_<%= status.id %>">
+                  <%= render :partial => "rb_tasks/task",
+                             :collection => story.tasks.select { |task| task.status.id == status.id } %>
+                </td>
+              <% end %>
+            </tr>
+          <% end %>
+        <% end %>
       <% end %>
     </table>
   </div>

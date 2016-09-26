@@ -113,6 +113,8 @@ en:
   backlogs_velocity_missing: "No velocity could be calculated for this project"
   backlogs_velocity_varies: "Velocity varies significantly over sprints"
   backlogs_wiki_template: "Template for sprint wiki page"
+  backlogs_show_subprojects: "show subprojects"
+  backlogs_hide_subprojects: "hide subprojects"
 
   button_edit_wiki: "Edit wiki page"
 
