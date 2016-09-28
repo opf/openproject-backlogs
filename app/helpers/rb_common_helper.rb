@@ -189,6 +189,16 @@ module RbCommonHelper
     ret.html_safe
   end
 
+  def include_project_descendants?()
+    params[:show_sub] and params[:show_sub].to_i == 1
+  end
+
+  def include_project_descendants_link()
+    link_text = include_project_descendants? ? t(:backlogs_hide_subprojects) : t(:backlogs_show_subprojects)
+    link_target = url_for(:show_sub => include_project_descendants? ? '0' : '1')
+    link_to(link_text, link_target)
+  end
+
   private
 
   def new_record_status
@@ -256,7 +266,7 @@ module RbCommonHelper
   end
 
   def get_backlogs_preference(assignee, attr)
-    assignee.is_a?(User) ? assignee.backlogs_preference(attr) : '#24B3E7'
+    assignee.is_a?(User) ? assignee.backlogs_preference(attr) : '#F8F6A5'
   end
 
   def template_story

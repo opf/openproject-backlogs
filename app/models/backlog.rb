@@ -47,14 +47,13 @@ class Backlog
     backlogs.map { |sprint| new(stories: stories_by_sprints[sprint.id], owner_backlog: true, sprint: sprint) }
   end
 
-  def self.sprint_backlogs(project, include_subprojects=false)
+  def self.sprint_backlogs(project, include_descendants=false)
+    project_ids = [project.id]
+    project_ids.concat(project.descendants.visible(User.current).to_a.map(&:id)) if include_descendants
+
     sprints = Sprint.apply_to(project).open.displayed_left(project).order_by_date
-    stories_by_sprints = Story.backlogs(project.id, sprints.map(&:id))
-    if include_subprojects
-      Project.active.where(parent_id: project.id).each do |p|
-        Story.backlogs(p, sprints.map(&:id)).each{|k,v| stories_by_sprints[k].concat(v)}
-      end
-    end
+    stories_by_sprints = Story.backlogs(project_ids, sprints.map(&:id))
+
     sprints.map { |sprint| new(stories: stories_by_sprints[sprint.id], sprint: sprint) }
   end
 

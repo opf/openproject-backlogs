@@ -78,8 +78,8 @@ class Sprint < Version
       .references(:version_settings)
   }
 
-  def stories(project, options = {})
-    Story.sprint_backlog(project, self, options)
+  def stories(projects, options = {})
+    Story.sprint_backlog(projects, self, options)
   end
 
   def points

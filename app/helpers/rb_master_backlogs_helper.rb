@@ -148,4 +148,8 @@ module RbMasterBacklogsHelper
 
     items
   end
+  
+  def breadcrumb_project_backlogs_path(project)
+    backlogs_project_backlogs_path(project, :show_sub => include_project_descendants? ? 1:0 )
+  end
 end

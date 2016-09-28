@@ -42,7 +42,6 @@ class RbApplicationController < ApplicationController
   skip_before_action :verify_authenticity_token, if: -> { Rails.env.test? }
 
   private
-
   # Loads the project to be used by the authorize filter to determine if
   # User.current has permission to invoke the method in question.
   def load_sprint_and_project

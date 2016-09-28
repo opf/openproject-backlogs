@@ -36,9 +36,9 @@
 class Story < WorkPackage
   extend OpenProject::Backlogs::Mixins::PreventIssueSti
 
-  def self.backlogs(project_id, sprint_ids, options = {})
+  def self.backlogs(project_ids, sprint_ids, options = {})
     options.reverse_merge!(order: Story::ORDER,
-                           conditions: Story.condition(project_id, sprint_ids))
+                           conditions: Story.condition(project_ids, sprint_ids))
 
     candidates = Story.where(options[:conditions]).order(options[:order])
 
@@ -58,8 +58,8 @@ class Story < WorkPackage
     stories_by_version
   end
 
-  def self.sprint_backlog(project, sprint, options = {})
-    Story.backlogs(project.id, [sprint.id], options)[sprint.id]
+  def self.sprint_backlog(projects, sprint, options = {})
+    Story.backlogs(projects.map(&:id), [sprint.id], options)[sprint.id]
   end
 
   def self.create_and_position(params, safer_attributes, prev)
@@ -176,7 +176,7 @@ class Story < WorkPackage
   private
 
   def self.condition(project_id, sprint_ids, extras = [])
-    c = ['project_id = ? AND type_id in (?) AND fixed_version_id in (?)',
+    c = ['project_id in (?) AND type_id in (?) AND fixed_version_id in (?)',
          project_id, Story.types, sprint_ids]
 
     if extras.size > 0
