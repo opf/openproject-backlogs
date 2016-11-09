@@ -133,7 +133,7 @@ module OpenProject::Backlogs::Patches::WorkPackagePatch
       elsif self.is_task?
         # Make sure to get the closest ancestor that is a Story, i.e. the one with the highest lft
         # otherwise, the highest parent that is a Story is returned
-        story_work_package = ancestors.find_by_type_id(Story.types, order: 'lft DESC')
+        story_work_package = ancestors.find_by(type_id: Story.types).order('lft DESC')
         return Story.find(story_work_package.id) if story_work_package
       end
       nil
@@ -248,7 +248,7 @@ module OpenProject::Backlogs::Patches::WorkPackagePatch
 
     def validate_parent_work_package_relation
       if parent && parent_work_package_relationship_spanning_projects?(parent, self)
-        errors.add(:parent,
+        errors.add(:parent_id,
                    :parent_child_relationship_across_projects,
                    work_package_name: subject,
                    parent_name: parent.subject)

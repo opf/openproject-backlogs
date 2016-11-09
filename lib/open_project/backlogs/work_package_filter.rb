@@ -33,35 +33,51 @@
 # See doc/COPYRIGHT.rdoc for more details.
 #++
 
-# Base class of all controllers in Backlogs
-class RbApplicationController < ApplicationController
-  helper :rb_common
+require 'story'
+require 'task'
 
-  before_action :load_sprint_and_project, :check_if_plugin_is_configured, :authorize
+module OpenProject::Backlogs
+  class WorkPackageFilter < ::Queries::BaseFilter
 
-  skip_before_action :verify_authenticity_token, if: -> { Rails.env.test? }
+    alias :project :context
+    alias :project= :context=
 
-  private
-
-  # Loads the project to be used by the authorize filter to determine if
-  # User.current has permission to invoke the method in question.
-  def load_sprint_and_project
-    # because of strong params, we want to pluck this variable out right now,
-    # otherwise it causes issues where we are doing `attributes=`.
-    if (@sprint_id = params.delete(:sprint_id))
-      @sprint = Sprint.find(@sprint_id)
-      @project = @sprint.project
+    def allowed_values
+      [[I18n.t(:story, scope: [:backlogs]), 'story'],
+       [I18n.t(:task, scope: [:backlogs]), 'task'],
+       [I18n.t(:impediment, scope: [:backlogs]), 'impediment'],
+       [I18n.t(:any, scope: [:backlogs]), 'any']]
     end
-    # This overrides sprint's project if we set another project, say a subproject
-    @project = Project.find(params[:project_id]) if params[:project_id]
-  end
 
-  def check_if_plugin_is_configured
-    settings = Setting.plugin_openproject_backlogs
-    if settings['story_types'].blank? || settings['task_type'].blank?
-      respond_to do |format|
-        format.html { render file: 'shared/not_configured' }
-      end
+    def available?
+      backlogs_enabled? &&
+        backlogs_configured?
+    end
+
+    def self.key
+      :backlogs_work_package_type
+    end
+
+    def order
+      20
+    end
+
+    def type
+      :list
+    end
+
+    def human_name
+      WorkPackage.human_attribute_name(:backlogs_work_package_type)
+    end
+
+    private
+
+    def backlogs_configured?
+      Story.types.present? && Task.type.present?
+    end
+
+    def backlogs_enabled?
+      project.nil? || project.module_enabled?(:backlogs)
     end
   end
 end
