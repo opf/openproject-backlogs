@@ -33,7 +33,7 @@
 language: ruby
 
 rvm:
-  - 2.2.5
+  - 2.4.1
 
 sudo: false
 
