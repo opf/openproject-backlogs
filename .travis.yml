@@ -111,7 +111,7 @@ before_install:
   - export PATH=$PWD/travis-phantomjs:$PATH
 
 before_script:
-  - sh script/ci_setup.sh $DB
+  - sh script/ci_setup.sh $TEST_SUITE $DB
 
 script:
   - sh script/ci_runner.sh
