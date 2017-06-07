@@ -157,10 +157,6 @@ module OpenProject::Backlogs
     end
 
     extend_api_response(:v3, :work_packages, :work_package_payload) do
-      property :position,
-               render_nil: true,
-               if: ->(*) { backlogs_enabled? && type && type.passes_attribute_constraint?(:position) }
-
       property :story_points,
                render_nil: true,
                if: ->(*) { backlogs_enabled? && type && type.passes_attribute_constraint?(:story_points) }
