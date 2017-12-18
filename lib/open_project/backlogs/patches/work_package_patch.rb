@@ -134,13 +134,13 @@ module OpenProject::Backlogs::Patches::WorkPackagePatch
     def blocks
       # return work_packages that I block that aren't closed
       return [] if closed?
-      blocks_relations.includes(:to).merge(WorkPackage.with_status_open).map(&:to)
+      blocks_relations.includes(:to).merge(::WorkPackage.with_status_open).map(&:to)
     end
 
     def blockers
       # return work_packages that block me
       return [] if closed?
-      blocked_by_relations.includes(:from).merge(WorkPackage.with_status_open).map(&:from)
+      blocked_by_relations.includes(:from).merge(::WorkPackage.with_status_open).map(&:from)
     end
 
     def backlogs_enabled?
@@ -148,7 +148,7 @@ module OpenProject::Backlogs::Patches::WorkPackagePatch
     end
 
     def in_backlogs_type?
-      backlogs_enabled? && WorkPackage.backlogs_types.include?(type.try(:id))
+      backlogs_enabled? && ::WorkPackage.backlogs_types.include?(type.try(:id))
     end
 
     private
@@ -162,4 +162,4 @@ module OpenProject::Backlogs::Patches::WorkPackagePatch
   end
 end
 
-WorkPackage.send(:include, OpenProject::Backlogs::Patches::WorkPackagePatch)
+::WorkPackage.send(:include, OpenProject::Backlogs::Patches::WorkPackagePatch)
