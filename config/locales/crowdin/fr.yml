@@ -14,13 +14,19 @@ fr:
             blocks_ids:
               can_only_contain_work_packages_of_current_sprint: "ne peut contenir que des ID de lots de travaux du sprint actuel."
               must_block_at_least_one_work_package: "doit contenir l'ID d'au moins un ticket."
-            fixed_version_id:
-              task_version_must_be_the_same_as_story_version: "doit être identique à la version de l'histoire."
             parent_id:
-              parent_child_relationship_across_projects: "n'est pas valide parce que le lot de travaux «%{work_package_name}» est une tâche de backlog et par conséquent ne peut avoir un parent en dehors du projet actuel."
               type_must_be_one_of_the_following: 'Type doit être parmi : %{type_names}.'
         sprint:
           cannot_end_before_it_starts: "Un sprint ne peut pas se terminer avant d'avoir débuté."
+  activemodel:
+    errors:
+      models:
+        work_package:
+          attributes:
+            fixed_version_id:
+              task_version_must_be_the_same_as_story_version: "doit être identique à la version de l'histoire parente."
+            parent_id:
+              parent_child_relationship_across_projects: "n'est pas valide parce que le lot de travaux «%{work_package_name}» est une tâche de backlog et par conséquent ne peut avoir un parent en dehors du projet actuel."
   backlogs:
     add_new_story: "Nouvelle histoire"
     any: "tout"
@@ -75,8 +81,8 @@ fr:
   backlogs_velocity_missing: "Aucune vélocité n'a pu être calculée pour ce projet"
   backlogs_velocity_varies: "La vélocité varie significativement d'un sprint à l'autre"
   backlogs_wiki_template: "Modèle pour page wiki de sprint"
-  backlogs_empty_title: "No versions are defined to be used in backlogs"
-  backlogs_empty_action_text: "To get started with backlogs, create a new version and assign it to a backlogs column."
+  backlogs_empty_title: "Aucune version n'est définie pour être utilisée dans les backlogs"
+  backlogs_empty_action_text: "Pour démarrer avec les backlogs, créez une nouvelle version et assignez-y une colonne de backlogs."
   button_edit_wiki: "Éditer la page du wiki"
   error_intro_plural: "Les erreurs suivantes ont été rencontrées :"
   error_intro_singular: "L'erreur suivante a été rencontrée :"
@@ -115,12 +121,6 @@ fr:
   permission_view_master_backlog: "Afficher le backlog principal"
   permission_view_taskboards: "Voir les tableaux des tâches"
   permission_update_sprints: "Éditer les sprints"
-  permission_create_stories: "Créer des histoires"
-  permission_update_stories: "Éditer les histoires"
-  permission_create_tasks: "Créer des tâches"
-  permission_update_tasks: "Éditer les tâches"
-  permission_create_impediments: "Créer des obstacles"
-  permission_update_impediments: "Éditer les obstacles"
   points_accepted: "points acceptés"
   points_committed: "points soumis"
   points_resolved: "points résolus"

@@ -14,13 +14,19 @@ zh-CN:
             blocks_ids:
               can_only_contain_work_packages_of_current_sprint: "只可以包含当前冲刺 (sprint) 中的工作包 ID。"
               must_block_at_least_one_work_package: "必须包含至少一个票证的 ID。"
-            fixed_version_id:
-              task_version_must_be_the_same_as_story_version: "必须与用户故事的版本相同。"
             parent_id:
-              parent_child_relationship_across_projects: "无效，因为工作包“%{work_package_name}”是一个待办清单任务，不能具有当前项目以外的上级项目。"
               type_must_be_one_of_the_following: 类型必须为以下其中一种：%{type_names}。
         sprint:
           cannot_end_before_it_starts: "冲刺 (Sprint) 不可以在开始前结束。"
+  activemodel:
+    errors:
+      models:
+        work_package:
+          attributes:
+            fixed_version_id:
+              task_version_must_be_the_same_as_story_version: "必须与父级故事的版本相同。"
+            parent_id:
+              parent_child_relationship_across_projects: "无效，因为工作包“%{work_package_name}”是一个待办清单任务，不能具有当前项目以外的上级项目。"
   backlogs:
     add_new_story: "新故事"
     any: "任何"
@@ -75,8 +81,8 @@ zh-CN:
   backlogs_velocity_missing: "此项目不能计算速度"
   backlogs_velocity_varies: "速度在不同冲刺 (sprint) 中差异很大"
   backlogs_wiki_template: "冲刺 (sprint) 的 Wiki 页面模板"
-  backlogs_empty_title: "No versions are defined to be used in backlogs"
-  backlogs_empty_action_text: "To get started with backlogs, create a new version and assign it to a backlogs column."
+  backlogs_empty_title: "未定义要用于待办清单的版本"
+  backlogs_empty_action_text: "要开始使用待办清单，请创建一个新版本并将其分配到待办清单列。"
   button_edit_wiki: "编辑 Wiki 页面"
   error_intro_plural: "发生以下错误："
   error_intro_singular: "发生以下错误："
@@ -115,12 +121,6 @@ zh-CN:
   permission_view_master_backlog: "查看主待办清单"
   permission_view_taskboards: "查看任务板"
   permission_update_sprints: "更新冲刺 (sprint)"
-  permission_create_stories: "创建故事"
-  permission_update_stories: "更新故事"
-  permission_create_tasks: "创建任务"
-  permission_update_tasks: "更新任务"
-  permission_create_impediments: "创建障碍"
-  permission_update_impediments: "更新障碍"
   points_accepted: "点数已接受"
   points_committed: "点数已确认"
   points_resolved: "点数已完成"

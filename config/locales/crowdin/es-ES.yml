@@ -14,13 +14,19 @@ es:
             blocks_ids:
               can_only_contain_work_packages_of_current_sprint: "solo puede conter IDs de paquetes de trabajo en el sprint actual."
               must_block_at_least_one_work_package: "debe contener el ID de por lo menos un ticket."
-            fixed_version_id:
-              task_version_must_be_the_same_as_story_version: "debe ser el mismo que la version de la historia."
             parent_id:
-              parent_child_relationship_across_projects: "no es valido porque el paquete de trabjo '%{work_package_name}' es una tarea de backlog y por lo tanto no puede tener un padre fuera del proyecto actual."
               type_must_be_one_of_the_following: 'El tipo debe ser uno de lo siguientes: %{type_names}.'
         sprint:
           cannot_end_before_it_starts: "El sprint no puede terminar antes del inicio."
+  activemodel:
+    errors:
+      models:
+        work_package:
+          attributes:
+            fixed_version_id:
+              task_version_must_be_the_same_as_story_version: "debe coincidir con la versión de la historia principal."
+            parent_id:
+              parent_child_relationship_across_projects: "no es valido porque el paquete de trabjo '%{work_package_name}' es una tarea de backlog y por lo tanto no puede tener un padre fuera del proyecto actual."
   backlogs:
     add_new_story: "Nueva historia"
     any: "cualquiera"
@@ -75,8 +81,8 @@ es:
   backlogs_velocity_missing: "No se puede calcular la velocidad de este proyecto"
   backlogs_velocity_varies: "La velocidad varía significativamente a lo largo de las iteraciones"
   backlogs_wiki_template: "Plantilla para la página wiki de iteración"
-  backlogs_empty_title: "No versions are defined to be used in backlogs"
-  backlogs_empty_action_text: "To get started with backlogs, create a new version and assign it to a backlogs column."
+  backlogs_empty_title: "No se especificó ninguna versión en los trabajos pendientes"
+  backlogs_empty_action_text: "Para empezar con los trabajos pendientes, cree una nueva versión y asígnela a la columna de trabajos pendientes."
   button_edit_wiki: "Editar página wiki"
   error_intro_plural: "Se encontraron los siguientes errores:"
   error_intro_singular: "Se ha encontrado el siguiente error:"
@@ -115,12 +121,6 @@ es:
   permission_view_master_backlog: "Ver backlog maestro"
   permission_view_taskboards: "Ver paneles de tareas"
   permission_update_sprints: "Actualizar sprints"
-  permission_create_stories: "Crear historias"
-  permission_update_stories: "Actualizar tareas"
-  permission_create_tasks: "Crear tareas"
-  permission_update_tasks: "Actualizar tareas"
-  permission_create_impediments: "Crear impedimentos"
-  permission_update_impediments: "Actualizar impedimentos"
   points_accepted: "puntos aceptados"
   points_committed: "puntos comprometidos"
   points_resolved: "puntos resueltos"

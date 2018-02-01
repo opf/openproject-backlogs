@@ -14,13 +14,19 @@ pt:
             blocks_ids:
               can_only_contain_work_packages_of_current_sprint: "pode conter somente os IDs dos pacotes de trabalho no sprint atual."
               must_block_at_least_one_work_package: "deve conter a identificação de pelo menos um bilhete."
-            fixed_version_id:
-              task_version_must_be_the_same_as_story_version: "deve ser o mesmo que a versão da história."
             parent_id:
-              parent_child_relationship_across_projects: "é inválido porque o pacote de trabalho '%{work_package_name}' é uma tarefa da lista de acumulados e, portanto, não pode ter um parente fora do projeto atual."
               type_must_be_one_of_the_following: 'O tipo deve ser um dos seguintes: %{type_names}.'
         sprint:
           cannot_end_before_it_starts: "Sprint não pode terminar antes de começar."
+  activemodel:
+    errors:
+      models:
+        work_package:
+          attributes:
+            fixed_version_id:
+              task_version_must_be_the_same_as_story_version: "tem ser o mesmo que a versão da história do pai."
+            parent_id:
+              parent_child_relationship_across_projects: "é inválido porque o pacote de trabalho '%{work_package_name}' é uma tarefa da lista de acumulados e, portanto, não pode ter um parente fora do projeto atual."
   backlogs:
     add_new_story: "Nova história"
     any: "qualquer"
@@ -75,8 +81,8 @@ pt:
   backlogs_velocity_missing: "Não foi possível calcular velocidade para este projeto"
   backlogs_velocity_varies: "A velocidade varia significativamente ao longo dos sprints"
   backlogs_wiki_template: "Modelo para a página wiki de sprint"
-  backlogs_empty_title: "No versions are defined to be used in backlogs"
-  backlogs_empty_action_text: "To get started with backlogs, create a new version and assign it to a backlogs column."
+  backlogs_empty_title: "Não estão definidas versões para utilizar com os repositórios"
+  backlogs_empty_action_text: "Para iniciar os repositórios, crie uma nova versão e atribua-a a uma coluna de repositórios."
   button_edit_wiki: "Editar página wiki"
   error_intro_plural: "Os seguintes erros foram encontrados:"
   error_intro_singular: "Foi encontrado o seguinte erro:"
@@ -115,12 +121,6 @@ pt:
   permission_view_master_backlog: "Ver repositório master"
   permission_view_taskboards: "Ver quadros de tarefas"
   permission_update_sprints: "Atualizar sprints"
-  permission_create_stories: "Criar histórias"
-  permission_update_stories: "Atualizar histórias"
-  permission_create_tasks: "Criar tarefas"
-  permission_update_tasks: "Atualizar tarefas"
-  permission_create_impediments: "Criar impedimentos"
-  permission_update_impediments: "Atualizar impedimentos"
   points_accepted: "pontos aceites"
   points_committed: "pontos comprometidos"
   points_resolved: "pontos resolvidos"

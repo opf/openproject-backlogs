@@ -14,13 +14,19 @@ ru:
             blocks_ids:
               can_only_contain_work_packages_of_current_sprint: "может содержать только идентификаторы рабочих пакетов в текущем спринте."
               must_block_at_least_one_work_package: "должен содержаться идентификатор по крайней мере одного билета."
-            fixed_version_id:
-              task_version_must_be_the_same_as_story_version: "должен быть таким же, как и версия истории."
             parent_id:
-              parent_child_relationship_across_projects: "недействителен, поскольку пакет работ '%{work_package_name}' - это невыполненное задание и, следовательно, не может иметь родителя за пределами текущего проекта."
               type_must_be_one_of_the_following: 'Тип должен быть одним из следующих: %{type_names}.'
         sprint:
           cannot_end_before_it_starts: "Спринт не может заканчиваться до того, как начнется."
+  activemodel:
+    errors:
+      models:
+        work_package:
+          attributes:
+            fixed_version_id:
+              task_version_must_be_the_same_as_story_version: "должен быть таким же, как этап родительской истории."
+            parent_id:
+              parent_child_relationship_across_projects: "недействителен, поскольку пакет работ '%{work_package_name}' - это невыполненное задание и, следовательно, не может иметь родителя за пределами текущего проекта."
   backlogs:
     add_new_story: "Новая история"
     any: "любой"
@@ -75,8 +81,8 @@ ru:
   backlogs_velocity_missing: "Нельзя рассчитать скорость для этого проекта"
   backlogs_velocity_varies: "Скорость спринтов значительно различается"
   backlogs_wiki_template: "Шаблон для wiki-страницы по спринту"
-  backlogs_empty_title: "No versions are defined to be used in backlogs"
-  backlogs_empty_action_text: "To get started with backlogs, create a new version and assign it to a backlogs column."
+  backlogs_empty_title: "Для невыполненных работ не задано ни одного этапа"
+  backlogs_empty_action_text: "Чтобы пользоваться модулем невыполненной работы, создайте этап и назначьте его столбцу невыполненной работы."
   button_edit_wiki: "Редактировать wiki-страницу"
   error_intro_plural: "Найдены следующие ошибки:"
   error_intro_singular: "Найдена следующая ошибка:"
@@ -115,12 +121,6 @@ ru:
   permission_view_master_backlog: "Просмотреть главную невыполненную работу"
   permission_view_taskboards: "Просмотреть панели задач"
   permission_update_sprints: "Обновить спринты"
-  permission_create_stories: "Создать истории"
-  permission_update_stories: "Обновить истории"
-  permission_create_tasks: "Создать задачи"
-  permission_update_tasks: "Обновить задачи"
-  permission_create_impediments: "Создать препятствия"
-  permission_update_impediments: "Обновить препятствия"
   points_accepted: "принятые пункты"
   points_committed: "порученные точки"
   points_resolved: "решенные пункты"
