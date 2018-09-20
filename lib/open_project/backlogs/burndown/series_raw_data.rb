@@ -84,10 +84,7 @@ module OpenProject::Backlogs::Burndown
     end
 
     def collected_days
-      @collected_days ||= begin
-        days = sprint.days(nil)
-        days.sort.select { |d| d <= Date.today }
-      end
+      @collected_days ||= sprint.days(nil)
     end
 
     def data_for_dates(dates)
