@@ -63,8 +63,13 @@ RB.Burndown = (function ($) {
       }
       $('#charts').html("<div class='loading'>" + RB.i18n.generating_graph + "</div>");
 
-      var url = RB.urlFor('show_burndown_chart', { sprint_id: $(this).data('this').sprintId, project_id: RB.constants.project_id});
-      window.open(url);
+      var url = RB.urlFor('show_burndown_chart', {
+          sprint_id: $(this).data('this').sprintId,
+          project_id: RB.constants.project_id
+      });
+      
+      var burndownWindow = window.open(url);
+      burndownWindow.sessionStorage.clear();
     }
   });
 }(jQuery));
