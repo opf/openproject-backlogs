@@ -122,10 +122,10 @@ module RbMasterBacklogsHelper
     items = {}
 
     items[:task_board] = link_to(l(:label_task_board),
-                                 {controller: '/rb_taskboards',
-                                 action: 'show',
-                                 project_id: @project,
-                                 sprint_id: backlog.sprint},
+                                 { controller: '/rb_taskboards',
+                                   action: 'show',
+                                   project_id: @project,
+                                   sprint_id: backlog.sprint },
                                  class: 'show_task_board')
 
 
