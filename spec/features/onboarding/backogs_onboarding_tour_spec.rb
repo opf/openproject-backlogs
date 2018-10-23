@@ -31,7 +31,8 @@ require 'spec_helper'
 describe 'backlogs onboarding tour', js: true do
   let(:next_button) { find('.enjoyhint_next_btn') }
   let(:user) { FactoryBot.create :admin }
-  let(:project) { FactoryBot.create :project, name: 'My Project', identifier: 'project1', is_public: true, enabled_module_names: %w[work_package_tracking backlogs] }
+  let(:demo_project) { FactoryBot.create :project, name: 'Demo project', identifier: 'demo-project', is_public: true, enabled_module_names: %w[work_package_tracking wiki] }
+  let(:project) { FactoryBot.create :project, name: 'Scrum project', identifier: 'your-scrum-project', is_public: true, enabled_module_names: %w[work_package_tracking wiki backlogs] }
   let(:sprint) { FactoryBot.create(:version, project: project, name: 'Sprint 1') }
   let(:status) { FactoryBot.create(:default_status) }
   let(:priority) { FactoryBot.create(:default_priority) }
@@ -66,49 +67,38 @@ describe 'backlogs onboarding tour', js: true do
 
   before do
     login_as user
+    allow(Setting).to receive(:demo_projects_available).and_return(true)
     allow(Setting).to receive(:plugin_openproject_backlogs).and_return('story_types' => [story_type.id.to_s],
                                                                        'task_type' => task_type.id.to_s)
+  end
+
+  after do
+    # Clear session to avoid that the onboarding tour starts
+    page.execute_script("window.sessionStorage.clear();")
   end
 
   context 'as a new user' do
     it 'I see a part of the onboarding tour in the backlogs section' do
       # Set the tour parameter so that we can start on the overview page
-      visit "/projects/#{project.identifier}/?start_onboarding_tour=true"
-
-      expect(page).to have_text 'This is the project’s Overview page.'
-
-      next_button.click
-      expect(page).to have_text 'From the Project menu you can access all modules within a project.'
+      visit "/projects/#{project.identifier}/backlogs/?start_scrum_onboarding_tour=true"
+      expect(page).to have_text 'Manage your work in the Backlogs view.'
 
       next_button.click
-      expect(page).to have_text 'In the Project settings you can configure your project’s modules.'
-
-      next_button.click
-      expect(page).to have_text 'Invite new Members to join your project.'
-
-      next_button.click
-      expect(page).to have_text 'Manage your work in the Backlogs view'
-
-      next_button.click
-      expect(page).to have_current_path backlogs_project_backlogs_path(project)
-      expect(page).to have_text 'Here you can create epics, user stories and bugs'
-
-      next_button.click
-      expect(page).to have_text 'To open your Task board, click on the Sprint drop-down...'
+      expect(page).to have_text 'To see your Task board, open on the Sprint drop-down...'
 
       next_button.click
       expect(page).to have_selector('.backlog .items', visible: true)
       expect(page).to have_text '... and select the Task board entry.'
 
       next_button.click
-      backlogs_project_sprint_path(sprint.id, project.id)
-      expect(page).to have_text 'The Task board visualizes the progress for each sprint.'
+      expect(page).to have_current_path backlogs_project_sprint_taskboard_path(project.identifier, sprint.id)
+      expect(page).to have_text 'The Task board visualizes the progress for this sprint.'
 
       next_button.click
-      expect(page).to have_text 'Here is the Work package section'
+      expect(page).to have_text "Now let's have a look at the Work package section, which gives you a more detailed view of your work."
 
       next_button.click
-      expect(page).to have_text  "Let's have a look at all open Work packages"
+      expect(page).to have_current_path project_work_packages_path(project.identifier)
     end
   end
 end
